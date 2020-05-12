@@ -1,0 +1,272 @@
+<html>
+<nav>
+  <button id="newbook">New</button>
+  <div id="search-wrapper">
+    <input type="search" placeholder="Search"></input>
+    <button id="search">Search</button>
+  </div>
+  <button id="sort">Sort</button>
+  <button id="filter">Filter</button>
+  <div id="empty">e</div>
+  <div id="empty">e</div>
+</nav>
+<main id="main">
+</main>
+
+</html>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&&family=Arvo&display=swap');
+
+  body {
+    margin: 0;
+  }
+
+  /* BOOKMARK SECTION */
+  nav {
+    position: fixed;
+    width: 11vw;
+    height: 32vw;
+    background-image: url("https://github.com/sinsofangels/stacks/blob/master/kissclipart-bookmark-clipart-bookmark-f9be247b5462a543.png?raw=true");
+    background-size: 11vw 32vw;
+    background-color: rgba(0, 0, 0, 0);
+    display: grid;
+    grid-template-rows: repeat(6, auto);
+  }
+
+  #empty {
+    color: rgba(0, 0, 0, 0);
+  }
+
+  button {
+    margin-bottom: 1vw;
+    margin-left: 1.5vw;
+    height: 3.5vw;
+    width: 8vw;
+    color: #380c96;
+    background-color: rgba(0, 0, 0, 0);
+    border-style: outset;
+    border-color: purple;
+    border-radius: 4px;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 1.8vw;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  button:active {
+    visibility: hidden;
+  }
+
+  input[type="search"] {
+    margin-bottom: .2vw;
+    margin-left: 1.5vw;
+    height: 2.3vw;
+    width: 8vw;
+    border-color: black;
+    border-width: 1px;
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: width 0.4s ease-in-out;
+    font-size: 1.6vw;
+  }
+
+  input:focus {
+    width: 17vw;
+  }
+
+  #newbook {
+    margin-top: 2vw;
+  }
+
+  /* BOOKSHELF START */
+  main {
+    display: grid;
+    grid-template-columns: 11.2vw 70vw 11.2vw;
+  }
+
+  .shelf {
+    background-color: #663800;
+    grid-column: 2 / 3;
+    width: 80vw;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-rows: 25vw;
+    border-style: solid;
+    border-color: #8f4f00;
+    border-width: 1vw;
+    align-items: end;
+  }
+
+  .book {
+    background-color: lightseagreen;
+    width: 4vw;
+    height: max-content;
+    max-height: 22vw;
+    padding: 1vw .5vw 1vw .5vw;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: 'Arvo', serif;
+    font-size: 1.7vw;
+    border-radius: 4px;
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+    cursor: pointer;
+  }
+
+  .book-onclick {
+    position: fixed;
+    height: 30vw;
+    width: 25vw;
+    max-height: 30vw;
+    word-wrap: break-word;
+    left: 40vw;
+    top: 10vw;
+    z-index: 2;
+    writing-mode: horizontal-tb;
+    text-orientation: upright;
+    font-size: 3vw;
+    text-align: center;
+    visibility: visible;
+    border-left-style: solid;
+  }
+  input[type="checkbox"] {
+    height: 2.5vw;
+    width: 2.5vw;
+  }
+
+  .hidden {
+    visibility: hidden;
+    position: fixed;
+  }
+  .year {
+    line-height: 0px;
+  }
+
+</style>
+<script>
+  //*to do later -- support for multiple authors? series?
+  let library = [];
+
+  // LIBRARY CREATION
+  const bookMakerConst = bookMaker;
+  function bookMaker(title, authorFirst, authorLast, pages, year, read) {
+    this.title = title;
+    this.authorFirst = authorFirst;
+    this.authorLast = authorLast;
+    this.pages = pages;
+    this.year = year;
+    this.read = read;
+  }
+  function addBookToLibrary(book) {
+    library.push(book);
+  }
+
+  const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "yes");
+  const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "yes");
+  const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "yes");
+  const theHobbit = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "yes");
+  const cryptonomicon = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "yes");
+  const graveyardBook = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "yes");
+  const anubisGates1 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "yes");
+  const colorOfMagic1 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "yes");
+  const storyOfStone1 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "yes");
+  const theHobbit1 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "yes");
+  const cryptonomicon1 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "yes");
+  const graveyardBook1 = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "yes");
+  const anubisGates2 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "yes");
+  const colorOfMagic2 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "yes");
+  const storyOfStone2 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "yes");
+  const theHobbit2 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "yes");
+  const cryptonomicon2 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "yes");
+  const graveyardBook2 = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "yes");
+
+  addBookToLibrary(anubisGates);
+  addBookToLibrary(colorOfMagic);
+  addBookToLibrary(anubisGates1);
+  addBookToLibrary(theHobbit);
+  addBookToLibrary(cryptonomicon);
+  addBookToLibrary(colorOfMagic1);
+  addBookToLibrary(graveyardBook);
+  addBookToLibrary(storyOfStone);
+  addBookToLibrary(cryptonomicon1);
+  addBookToLibrary(storyOfStone1);
+  addBookToLibrary(anubisGates2);
+  addBookToLibrary(theHobbit1);
+  addBookToLibrary(storyOfStone2);
+  addBookToLibrary(theHobbit2);
+  addBookToLibrary(graveyardBook1);
+  addBookToLibrary(cryptonomicon2);
+  addBookToLibrary(colorOfMagic2);
+  addBookToLibrary(graveyardBook2);
+
+  // COLOR PICKER
+  function colorPicker() {
+    let num = Math.floor(Math.random() * 10);
+    let colorArray = [["#ff756b", 1], ["lightseagreen", 2], ["#6bceff", 3], ["#7375c7", 4], ["#ddc0fa", 5], ["#ac84ad", 6], ["#d8db93", 7], ["#a68b46", 8], ["#76deb2", 9], ["#8bb586", 0]]
+    for (let i in colorArray) {
+      if (colorArray[i].includes(num)) {
+        return colorArray[i][0];
+      }
+    }
+  }
+
+  //BOOK CREATION/SPINES + IDs + CLASSES
+  function render(library) {
+    for (let i in library) {
+      library[i].id = `book${i}`;
+      if (i % 15 === 0) {
+        if (document.getElementById("currentShelf")) {
+          currentShelf.removeAttribute("id", "currentShelf");
+        }
+        main.appendChild(document.createElement("section"));
+        main.lastChild.setAttribute("id", "currentShelf");
+        main.lastChild.classList.add("shelf");
+      }
+      currentShelf.appendChild(document.createElement("div"));
+      currentShelf.lastChild.classList.add("book");
+      currentShelf.lastChild.setAttribute("id", `book${i}`);
+      currentShelf.lastChild.textContent = `${library[i].title}`;
+      currentShelf.lastChild.style.backgroundColor = `${colorPicker()}`;
+      let currentDivId = document.getElementById(`book${i}`);
+      currentDivId.appendChild(document.createElement("p"));
+      currentDivId.lastChild.textContent = `${library[i].authorFirst} ${library[i].authorLast}`;
+      currentDivId.lastChild.classList.add("hidden");
+      currentDivId.appendChild(document.createElement("p"));
+      currentDivId.lastChild.textContent = `Year: ${library[i].year}`;
+      currentDivId.lastChild.classList.add("hidden", "year");
+      currentDivId.appendChild(document.createElement("p"));
+      currentDivId.lastChild.textContent = `Pages: ${library[i].pages}`;
+      currentDivId.lastChild.classList.add("hidden");
+      currentDivId.appendChild(document.createElement("div"));
+      currentDivId.lastChild.classList.add("hidden");
+      currentDivId.lastChild.appendChild(document.createElement("input"));
+      let readBox = document.querySelector(`#book${i} div input`);
+      readBox.setAttribute("type", "checkbox");
+      readBox.name = "read";
+      currentDivId.lastChild.appendChild(document.createElement("label"));
+      let readLabel = document.querySelector(`#book${i} div label`);
+      readLabel.setAttribute("for", "read");
+      readLabel.textContent = "Read";
+    }
+  }
+  render(library);
+  //SELECTING BOOK / EVENT LISTENER
+
+  let bookClass = document.getElementsByClassName("book");
+  for (let i = 0; i < bookClass.length; i++) {
+    bookClass[i].addEventListener("click", selectBook);
+  }
+
+  function selectBook(e) {
+    let children = e.target.childNodes;
+    if (e.target === e.currentTarget) {
+      e.target.classList.toggle("book-onclick");
+      for (let i in children) {
+        if (children[i].classList) {
+          children[i].classList.toggle("hidden");
+        }
+      }
+    }
+  }
+
+</script>
