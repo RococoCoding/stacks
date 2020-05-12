@@ -1,6 +1,6 @@
 <html>
 <nav>
-  <button id="newbook">New</button>
+  <button id="new-book-button">New</button>
   <div id="search-wrapper">
     <input type="search" placeholder="Search"></input>
     <button id="search">Search</button>
@@ -10,9 +10,24 @@
   <div id="empty">e</div>
   <div id="empty">e</div>
 </nav>
+<form id="new-book-form" class="hidden">
+  <label class="new-book-labels">Title: </label>
+  <input form="new-book-" type="text"></input>
+  <label class="new-book-labels">Author Name: </label>
+  <input form="new-book-form" type="text"></input>
+  <label class="new-book-labels">Pages: </label>
+  <input form="new-book-form" type="number"></input>
+  <label class="new-book-labels">Year: </label>
+  <input form="new-book-form" type="number"></input>
+  <div id="new-read-wrapper">
+    <input form="new-book-form" type="checkbox" name="read" id="new-read"/>
+    <label for="new-read" class="new-book-labels" id="new-read-label">Read</label>
+    <button form="new-book-form" type="submit">Add</button>
+    <button form="new-book-form">Cancel</button> 
+</div> 
+</form>
 <main id="main">
 </main>
-
 </html>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&&family=Arvo&display=swap');
@@ -20,8 +35,7 @@
   body {
     margin: 0;
   }
-
-  /* BOOKMARK SECTION */
+/* BOOKMARK SECTION */
   nav {
     position: fixed;
     width: 11vw;
@@ -53,8 +67,9 @@
     cursor: pointer;
   }
 
-  button:active {
-    visibility: hidden;
+  nav > button:active {
+    color: rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0);
   }
 
   input[type="search"] {
@@ -73,16 +88,51 @@
     width: 17vw;
   }
 
-  #newbook {
+  #new-book-button {
     margin-top: 2vw;
   }
-
-  /* BOOKSHELF START */
+  #new-book-form {
+    background-color: ivory;
+    height: 35vw;
+    width: 30vw;
+    margin-left: 35vw;
+    margin-top: 5vw;
+    padding: 3vw;
+    z-index: 1;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 5px;
+    font-size: 2vw;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+  }
+  #new-book-form > input {
+    width: 25vw;
+    height: 3vw;
+    margin: 1vw;
+  }
+  #new-read-wrapper {
+    display: flex;
+    padding-top: 2vw;
+  }
+  #new-read {
+    height: 2vw;
+    width: 2vw;
+  }
+  #new-read-wrapper > button {
+    color: black;
+    margin-top: -0.2vw;
+    font-weight: normal;
+    border-color: rgb(139, 139, 139);
+    border-width: 1.5px;
+  }
+/* BOOKSHELF START */
   main {
     display: grid;
     grid-template-columns: 11.2vw 70vw 11.2vw;
   }
-
   .shelf {
     background-color: #663800;
     grid-column: 2 / 3;
@@ -95,7 +145,6 @@
     border-width: 1vw;
     align-items: end;
   }
-
   .book {
     background-color: lightseagreen;
     width: 4vw;
@@ -113,7 +162,6 @@
     cursor: pointer;
     overflow:hidden;
   }
-
   .book-onclick {
     position: fixed;
     height: max-content;
@@ -122,7 +170,7 @@
     word-wrap: break-word;
     left: 40vw;
     top: 10vw;
-    z-index: 2;
+    z-index: 1;
     writing-mode: horizontal-tb;
     text-orientation: upright;
     font-size: 3vw;
@@ -135,13 +183,8 @@
     height: 2vw;
     width: 2vw;
   }
-  label {
+  label[for=read] {
     font-size: 2.2vw;
-  }
-
-  .hidden {
-    visibility: hidden;
-    position: fixed;
   }
   .year {
     line-height: 0px;
@@ -158,10 +201,10 @@
     margin-top: 4vw;
     color: black;
   }
-  .delete-button:active {
-    visibility:visible;
+  .hidden {
+    visibility: hidden;
+    position: fixed;
   }
-
 </style>
 <script>
   //*to do later -- support for multiple authors? series?
@@ -295,8 +338,9 @@
             createAppend(parent, newNode);
             parent.lastChild.setAttribute("type", "checkbox");
             parent.lastChild.name = "read";
+            parent.lastChild.id = `read${i}`;
             createAppend(parent, "label");
-            parent.lastChild.setAttribute("for", "read");
+            parent.lastChild.setAttribute("for", `read${i}`);
             setText(parent.lastChild, "Read");
           }
           createInput(parent.lastChild, "input");
@@ -345,5 +389,9 @@
     }
   }
 //BOOKMARK BUTTONS
-
+document.getElementById("new-book-button").addEventListener("click", openNewBookForm);
+  function openNewBookForm() {
+    let bookForm = document.getElementById("new-book-form");
+    bookForm.classList.toggle("hidden");
+  }
 </script>
