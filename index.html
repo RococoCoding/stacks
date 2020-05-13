@@ -12,7 +12,7 @@
 </nav>
 <form id="form1" class="form1 hidden">
   <label class="new-book-labels">Title: </label>
-  <input form="form1" type="text" placeholder="No quotes"></input>
+  <input form="form1" type="text"></input>
   <label class="new-book-labels">Author Name: </label>
   <div id="author-name-div">
     <input form="form1" type="text" id="name-input-first" placeholder="First Name"></input>
@@ -23,7 +23,7 @@
   <label class="new-book-labels">Year: </label>
   <input form="form1" type="number"></input>
   <div id="new-read-wrapper">
-    <input form="form1" type="checkbox" name="read" id="new-read"/>
+    <input form="form1" type="checkbox" name="new-read" id="new-read"/>
     <label for="new-read" class="new-book-labels" id="new-read-label">Read</label>
     <button form="form1" type="submit">Add</button>
     <button form="form1">Cancel</button> 
@@ -231,7 +231,7 @@
 
 // LIBRARY CREATION
   const bookMakerConst = bookMaker;
-  function bookMaker(title = "untitled", authorFirst = "unknown", authorLast = "unknown", pages = 0, year = 0, read = "no") {
+  function bookMaker(title = "untitled", authorFirst = "unknown", authorLast = "unknown", pages = 0, year = 0, read = "off") {
     this.title = title;
     this.authorFirst = authorFirst;
     this.authorLast = authorLast;
@@ -243,24 +243,24 @@
     library.push(book);
   }
 
-  const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "yes");
-  const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "yes");
-  const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "yes");
-  const theHobbit = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "yes");
-  const cryptonomicon = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "yes");
-  const graveyardBook = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "yes");
-  const anubisGates1 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "yes");
-  const colorOfMagic1 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "yes");
-  const storyOfStone1 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "yes");
-  const theHobbit1 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "yes");
-  const cryptonomicon1 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "yes");
-  const graveyardBook1 = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "yes");
-  const anubisGates2 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "yes");
-  const colorOfMagic2 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "yes");
-  const storyOfStone2 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "yes");
-  const theHobbit2 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "yes");
-  const cryptonomicon2 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "yes");
-  const graveyardBook2 = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "yes");
+  const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "off");
+  const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
+  const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
+  const theHobbit = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
+  const cryptonomicon = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
+  const graveyardBook = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
+  const anubisGates1 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "on");
+  const colorOfMagic1 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
+  const storyOfStone1 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
+  const theHobbit1 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
+  const cryptonomicon1 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
+  const graveyardBook1 = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
+  const anubisGates2 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "on");
+  const colorOfMagic2 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
+  const storyOfStone2 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
+  const theHobbit2 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
+  const cryptonomicon2 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
+  const graveyardBook2 = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
   const longBook = new bookMaker("the longest book title ever: can't stop me now I'll just keep going haha", "superlonglong", "extralonglongname", "10,000", 2008, "no");
 
   addBookToLibrary(anubisGates);
@@ -314,7 +314,7 @@
   function render(library) {
     for (let i in library) {
       if (!library[i].id) {
-        library[i].id = `book${i}`;
+        library[i].id = `${i}`;
         if (i % 15 === 0) {
           if (document.getElementById("currentShelf")) {
             currentShelf.removeAttribute("id", "currentShelf");
@@ -327,7 +327,7 @@
           function createParentDiv(parent, newNode) {
             createAppend(parent, "div");
             classAdd(parent.lastChild, "book");
-            setID(parent.lastChild, `book${i}`);
+            setID(parent.lastChild, `${i}`);
             setText(parent.lastChild, `${library[i].title}`);
             setBookColor(parent.lastChild);
           }
@@ -358,6 +358,10 @@
               parent.lastChild.setAttribute("type", "checkbox");
               parent.lastChild.name = "read";
               parent.lastChild.id = `read${i}`;
+              if (library[i].read === "on") {
+                parent.lastChild.checked = true;
+              }
+              else parent.lastChild.checked = false;
               createAppend(parent, "label");
               parent.lastChild.setAttribute("for", `read${i}`);
               setText(parent.lastChild, "Read");
@@ -377,8 +381,21 @@
     }
   }
   render(library);
+//READ? CHECKBOX SAVE TO LIBRARY
+  let checkboxes = document.querySelectorAll("input[name=read]") 
+  for (let i = 0; i < checkboxes.length; i++) {
+    let id = `read${i}`;
+    document.getElementById(`${id}`).addEventListener('change', saveToLibrary);
+  }    
+  function saveToLibrary(e) {
+     if (e.target.checked === true) {
+       let id = e.target.id;
+       id = parseInt(id.slice(4));
+       library[id].read = "on";
+       console.log(library[id].read)
+     }
+  }
 //SELECTING BOOK / EVENT LISTENER
-
   let bookClass = document.getElementsByClassName("book");
   for (let i = 0; i < bookClass.length; i++) {
     bookClass[i].addEventListener("click", selectBook);
