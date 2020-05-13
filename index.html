@@ -10,21 +10,24 @@
   <div id="empty">e</div>
   <div id="empty">e</div>
 </nav>
-<form id="new-book-form" class="hidden">
+<form id="form1" class="form1 hidden">
   <label class="new-book-labels">Title: </label>
-  <input form="new-book-" type="text"></input>
+  <input form="form1" type="text" placeholder="No quotes"></input>
   <label class="new-book-labels">Author Name: </label>
-  <input form="new-book-form" type="text"></input>
+  <div id="author-name-div">
+    <input form="form1" type="text" id="name-input-first" placeholder="First Name"></input>
+    <input form="form1" type="text" id="name-input-last" placeholder="Last Name"></input>
+  </div>
   <label class="new-book-labels">Pages: </label>
-  <input form="new-book-form" type="number"></input>
+  <input form="form1" type="number"></input>
   <label class="new-book-labels">Year: </label>
-  <input form="new-book-form" type="number"></input>
+  <input form="form1" type="number"></input>
   <div id="new-read-wrapper">
-    <input form="new-book-form" type="checkbox" name="read" id="new-read"/>
+    <input form="form1" type="checkbox" name="read" id="new-read"/>
     <label for="new-read" class="new-book-labels" id="new-read-label">Read</label>
-    <button form="new-book-form" type="submit">Add</button>
-    <button form="new-book-form">Cancel</button> 
-</div> 
+    <button form="form1" type="submit">Add</button>
+    <button form="form1">Cancel</button> 
+  </div> 
 </form>
 <main id="main">
 </main>
@@ -91,7 +94,7 @@
   #new-book-button {
     margin-top: 2vw;
   }
-  #new-book-form {
+  .form1 {
     background-color: ivory;
     height: 35vw;
     width: 30vw;
@@ -108,7 +111,7 @@
     font-size: 2vw;
     font-family: 'M PLUS Rounded 1c', sans-serif;
   }
-  #new-book-form > input {
+  .form1 > input {
     width: 25vw;
     height: 3vw;
     margin: 1vw;
@@ -127,6 +130,22 @@
     font-weight: normal;
     border-color: rgb(139, 139, 139);
     border-width: 1.5px;
+  }
+  #author-name-div {
+    display: flex;
+    flex-direction: row;
+  }
+  #name-input-first {
+    width: 11.5vw;
+    height: 2.5vw;
+    margin-right: 2vw;
+    margin-top: 1vw;
+  }
+  #name-input-last {
+    width: 11.5vw;
+    height: 2.5vw;
+    margin-bottom: 2vw;
+    margin-top: 1vw;
   }
 /* BOOKSHELF START */
   main {
@@ -212,7 +231,7 @@
 
 // LIBRARY CREATION
   const bookMakerConst = bookMaker;
-  function bookMaker(title, authorFirst, authorLast, pages, year, read) {
+  function bookMaker(title = "untitled", authorFirst = "unknown", authorLast = "unknown", pages = 0, year = 0, read = "no") {
     this.title = title;
     this.authorFirst = authorFirst;
     this.authorLast = authorLast;
@@ -294,66 +313,67 @@
 //MAIN BOOK CREATION FUNCTION
   function render(library) {
     for (let i in library) {
-      library[i].id = `book${i}`;
-      if (i % 15 === 0) {
-        if (document.getElementById("currentShelf")) {
-          currentShelf.removeAttribute("id", "currentShelf");
-        }
-        main.appendChild(document.createElement("section"));
-        main.lastChild.setAttribute("id", "currentShelf");
-        main.lastChild.classList.add("shelf");
-      }       
-      // FUNCTION INCEPTION  
-      function bookMakerDOM(parent, newNode) {
-        function createParentDiv(parent, newNode) {
-          createAppend(parent, "div");
-          classAdd(parent.lastChild, "book");
-          setID(parent.lastChild, `book${i}`);
-          setText(parent.lastChild, `${library[i].title}`);
-          setBookColor(parent.lastChild);
-        }
-        createParentDiv(parent, newNode);
-        function addAuthorName(parent, newNode) {
-          createAppend(parent, newNode);
-          setText(parent.lastChild, `${library[i].authorFirst} ${library[i].authorLast}`);
-          classAdd(parent.lastChild, "hidden");
-        }
-        addAuthorName(parent.lastChild, "p");
-        function addYear(parent, newNode) {
-          createAppend(parent, newNode);
-          setText(parent.lastChild, `Year: ${library[i].year}`);
-          classAdd(parent.lastChild, "hidden", "year");
-        }
-        addYear(parent.lastChild, "p");
-        function addPages(parent, newNode) {
-          createAppend(parent, newNode);
-          setText(parent.lastChild, `Pages: ${library[i].pages}`);
-          classAdd(parent.lastChild, "hidden", "pages");
-        }
-        addPages(parent.lastChild, "p");
-        function createReadBox(parent, newNode) {
-          createAppend(parent, newNode);
-          classAdd(parent.lastChild, "hidden", "box-wrapper");
-          function createInput(parent, newNode) {
-            createAppend(parent, newNode);
-            parent.lastChild.setAttribute("type", "checkbox");
-            parent.lastChild.name = "read";
-            parent.lastChild.id = `read${i}`;
-            createAppend(parent, "label");
-            parent.lastChild.setAttribute("for", `read${i}`);
-            setText(parent.lastChild, "Read");
+      if (!library[i].id) {
+        library[i].id = `book${i}`;
+        if (i % 15 === 0) {
+          if (document.getElementById("currentShelf")) {
+            currentShelf.removeAttribute("id", "currentShelf");
           }
-          createInput(parent.lastChild, "input");
+          main.appendChild(document.createElement("section"));
+          main.lastChild.setAttribute("id", "currentShelf");
+          main.lastChild.classList.add("shelf");
+        }       
+        function bookMakerDOM(parent, newNode) {
+          function createParentDiv(parent, newNode) {
+            createAppend(parent, "div");
+            classAdd(parent.lastChild, "book");
+            setID(parent.lastChild, `book${i}`);
+            setText(parent.lastChild, `${library[i].title}`);
+            setBookColor(parent.lastChild);
+          }
+          createParentDiv(parent, newNode);
+          function addAuthorName(parent, newNode) {
+            createAppend(parent, newNode);
+            setText(parent.lastChild, `${library[i].authorFirst} ${library[i].authorLast}`);
+            classAdd(parent.lastChild, "hidden");
+          }
+          addAuthorName(parent.lastChild, "p");
+          function addYear(parent, newNode) {
+            createAppend(parent, newNode);
+            setText(parent.lastChild, `Year: ${library[i].year}`);
+            classAdd(parent.lastChild, "hidden", "year");
+          }
+          addYear(parent.lastChild, "p");
+          function addPages(parent, newNode) {
+            createAppend(parent, newNode);
+            setText(parent.lastChild, `Pages: ${library[i].pages}`);
+            classAdd(parent.lastChild, "hidden", "pages");
+          }
+          addPages(parent.lastChild, "p");
+          function createReadBox(parent, newNode) {
+            createAppend(parent, newNode);
+            classAdd(parent.lastChild, "hidden", "box-wrapper");
+            function createInput(parent, newNode) {
+              createAppend(parent, newNode);
+              parent.lastChild.setAttribute("type", "checkbox");
+              parent.lastChild.name = "read";
+              parent.lastChild.id = `read${i}`;
+              createAppend(parent, "label");
+              parent.lastChild.setAttribute("for", `read${i}`);
+              setText(parent.lastChild, "Read");
+            }
+            createInput(parent.lastChild, "input");
+          }
+          createReadBox(parent.lastChild, "div");
+          function deleteButton(parent, newNode) {
+            createAppend(parent, newNode);
+            setText(parent.lastChild, "Delete");
+            classAdd(parent.lastChild, "hidden", "delete-button");
+          }
+          deleteButton(parent.lastChild, "button");
         }
-        createReadBox(parent.lastChild, "div");
-        function deleteButton(parent, newNode) {
-          createAppend(parent, newNode);
-          setText(parent.lastChild, "Delete");
-          classAdd(parent.lastChild, "hidden", "delete-button");
-        }
-        deleteButton(parent.lastChild, "button");
+        bookMakerDOM(currentShelf, "div");
       }
-      bookMakerDOM(currentShelf, "div");
     }
   }
   render(library);
@@ -389,9 +409,28 @@
     }
   }
 //BOOKMARK BUTTONS
+  //OPEN NEW BOOK FORM
 document.getElementById("new-book-button").addEventListener("click", openNewBookForm);
   function openNewBookForm() {
-    let bookForm = document.getElementById("new-book-form");
+    let bookForm = document.getElementById("form1");
     bookForm.classList.toggle("hidden");
   }
+  //ADD NEW BOOK
+let form1 = document.getElementById("form1");
+form1.addEventListener("submit", addNewBook);
+function addNewBook(){
+  event.preventDefault();
+  let title = document.getElementById("form1").elements[0];
+  let authorFirst = document.getElementById("form1").elements[1];
+  let authorLast = document.getElementById("form1").elements[2];
+  let pages = document.getElementById("form1").elements[3];
+  let year = document.getElementById("form1").elements[4];
+  let read = document.getElementById("form1").elements[5];
+  const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value, year.value, read.value);
+  addBookToLibrary(newBook);
+  render(library);
+  document.getElementById("currentShelf").lastElementChild.addEventListener("click", selectBook);
+  openNewBookForm();
+  document.getElementById("form1").reset();
+}
 </script>
