@@ -2,8 +2,8 @@
 <nav>
   <button id="new-book-button">New</button>
   <form id="search-form">
-    <input form="search-form" type="text" placeholder="Search"></input>
-    <button form="search-form" id="search" type="submit">Search</button>
+    <input form="search-form" type="search" id="search-box" class="hidden" placeholder="Search"></input>
+    <button form="search-form" id="search-button" type="button" onclick="toggleSearch()">Search</button>
   </form>
   <button id="sort">Sort</button>
   <button id="filter">Filter</button>
@@ -82,14 +82,10 @@
     border-color: black;
     border-width: 1px;
     background-color: rgba(255, 255, 255, 0.7);
-    transition: width 0.4s ease-in-out;
     font-size: 1.6vw;
   }
   #search-form {
     margin-bottom: 0;
-  }
-  input:focus {
-    width: 17vw;
   }
   #new-book-button {
     margin-top: 2vw;
@@ -480,23 +476,41 @@ function closeForm() {
 }
 //SEARCH BUTTON
 let searchForm = document.getElementById("search-form");
-searchForm.addEventListener("submit", search);
-function search(){
-  event.preventDefault();
-  let searchQuery = document.getElementById("search-form").elements[0];
+searchForm.addEventListener("input", search);
+searchForm.addEventListener("submit", () => {event.preventDefault();});
+
+function search(e){
+  let searchQuery = document.getElementById("search-box").value;
   for (let i in mainLibrary) {
-    let lowerCaseTitle = mainLibrary[i].title.toLowerCase()
-    if (mainLibrary[i].title.toLowerCase().indexOf(searchQuery.value.toLowerCase()) !== -1 || 
-    mainLibrary[i].authorFirst.toLowerCase().indexOf(searchQuery.value.toLowerCase()) !== -1 ||
-    mainLibrary[i].authorLast.toLowerCase().indexOf(searchQuery.value.toLowerCase()) !== -1) {
-      let bookID = mainLibrary[i].id;
-      document.getElementById(`${bookID}`).classList.toggle("raised");
+    let bookID = mainLibrary[i].id;
+    let lowerCaseTitle = mainLibrary[i].title.toLowerCase();
+    if (!searchQuery) {document.getElementById(`${bookID}`).classList.remove("raised");}
+    else {
+      if (mainLibrary[i].title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1 || 
+      mainLibrary[i].authorFirst.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1 ||
+      mainLibrary[i].authorLast.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1) {
+        document.getElementById(`${bookID}`).classList.add("raised");
+      }
+      if (mainLibrary[i].title.toLowerCase().indexOf(searchQuery.toLowerCase()) === -1 && 
+      mainLibrary[i].authorFirst.toLowerCase().indexOf(searchQuery.toLowerCase()) === -1 &&
+      mainLibrary[i].authorLast.toLowerCase().indexOf(searchQuery.toLowerCase()) === -1) {
+        document.getElementById(`${bookID}`).classList.remove("raised");
+      }
     }
   }
-  document.getElementById("search-form").reset();
 }
 
-//TO DO - SEARCH, SORT, FILTER
+function toggleSearch() {
+  document.getElementById("search-box").classList.toggle("hidden");
+  if (document.getElementById("search-button").textContent == "Search") {
+    document.getElementById("search-button").textContent = "Close";
+
+  }
+  else document.getElementById("search-button").textContent = "Search";    
+    document.getElementById("search-box").value = null;
+    search();
+}
+//TO DO - SORT, FILTER
 //BACKEND
 //CLOSE & MOVE BOOK?
 </script>
