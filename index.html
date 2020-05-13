@@ -1,10 +1,10 @@
 <html>
 <nav>
   <button id="new-book-button">New</button>
-  <div id="search-wrapper">
-    <input type="search" placeholder="Search"></input>
-    <button id="search">Search</button>
-  </div>
+  <dform id="search-form">
+    <input form="search-form" type="search" placeholder="Search"></input>
+    <button form="search-form" id="search" type="submit">Search</button>
+  </form>
   <button id="sort">Sort</button>
   <button id="filter">Filter</button>
   <div id="empty">e</div>
@@ -25,8 +25,8 @@
   <div id="new-read-wrapper">
     <input form="form1" type="checkbox" name="new-read" id="new-read"/>
     <label for="new-read" class="new-book-labels" id="new-read-label">Read</label>
-    <button form="form1" type="submit">Add</button>
-    <button form="form1">Cancel</button> 
+    <button form="form1" type="submit" id="add-button">Add</button>
+    <button form="form1" type="button" id="cancel">Cancel</button> 
   </div> 
 </form>
 <main id="main">
@@ -381,7 +381,7 @@
     }
   }
   render(library);
-//READ? CHECKBOX SAVE TO LIBRARY
+//READ STATUS SAVE TO LIBRARY
   let checkboxes = document.querySelectorAll("input[name=read]") 
   for (let i = 0; i < checkboxes.length; i++) {
     let id = `read${i}`;
@@ -435,7 +435,7 @@ document.getElementById("new-book-button").addEventListener("click", openNewBook
   //ADD NEW BOOK
 let form1 = document.getElementById("form1");
 form1.addEventListener("submit", addNewBook);
-function addNewBook(){
+function addNewBook(e){
   event.preventDefault();
   let title = document.getElementById("form1").elements[0];
   let authorFirst = document.getElementById("form1").elements[1];
@@ -450,4 +450,13 @@ function addNewBook(){
   openNewBookForm();
   document.getElementById("form1").reset();
 }
+  //CANCEL BUTTON
+let cancel = document.getElementById("cancel");  
+cancel.addEventListener("click", closeForm);
+function closeForm() {
+  openNewBookForm();
+  document.getElementById("form1").reset();
+}
+//SEARCH BUTTON
+
 </script>

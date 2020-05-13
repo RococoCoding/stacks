@@ -1,15 +1,6 @@
-function outer() {
-    let counter = 0;
-    return function inner() {
-        counter++;
-        return counter;
-    }
+let array = [1, 2, 3, 4];
+let i = 0;
+while (array[i] !== 2 && i < array.length) {
+    i++;
+    console.log(i);
 }
-const callOuter = outer();
-callOuter();
-callOuter();
-callOuter();
-
-const callOuterToo = outer();
-callOuterToo();
-console.log(callOuterToo());
