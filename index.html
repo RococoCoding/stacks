@@ -551,13 +551,11 @@ function addNewBook(e){
   let year = document.getElementById("add-new-form").elements[4];
   let read = document.getElementById("add-new-form").elements[5];
   read.checked === false ? read.value = "off": read.value = "on";
-  console.log(read.value)
   const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value, year.value, read.value);
   addBookToLibrary(newBook);
   deleteMainDOM();
   render(mainLibrary);
-  document.getElementById("currentShelf").lastElementChild.addEventListener("click", selectBook);
-  openNewBookForm();
+  bookClass[i].addEventListener("click", selectBook);
   document.getElementById("add-new-form").reset();
 }
   //CLEAR BUTTON
