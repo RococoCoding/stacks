@@ -634,7 +634,7 @@ function refreshDOM(lib) {
 }
 function sort(e) {
   tempLibrary = [...mainLibrary];
-  function mySort(prop) {
+  function sortByProp(prop) {
     return function(a, b) {
       let varA = a[prop].toUpperCase(), varB = b[prop].toUpperCase();
       if (varA < varB) return -1;
@@ -646,15 +646,15 @@ function sort(e) {
     if (sortForm[i].checked !== false) {
       switch (sortForm[i].value) {
         case "title":
-              tempLibrary.sort(mySort('title'));
+              tempLibrary.sort(sortByProp('title'));
               refreshDOM(tempLibrary);
               break;
         case "authorFirst":
-              tempLibrary.sort(mySort('authorFirst'));
+              tempLibrary.sort(sortByProp('authorFirst'));
               refreshDOM(tempLibrary);
               break;      
         case "authorLast":
-              tempLibrary.sort(mySort('authorLast'));
+              tempLibrary.sort(sortByProp('authorLast'));
               refreshDOM(tempLibrary);
               break;      
         case "pages":
