@@ -1,32 +1,93 @@
 <html>
+  <title>Stacks</title>
 <nav>
   <button id="new-book-button">New</button>
-  <form id="search-form">
+  <div id="search-form">
     <input form="search-form" type="text" id="search-box" class="hidden" placeholder="Title/Name"></input>
     <button form="search-form" id="search-button" type="button" onclick="toggleSearch()">Search</button>
-  </form>
-  <button id="sort">Sort</button>
-  <button id="filter">Filter</button>
+</div>
+  <button id="sort-button">Sort</button>
+  <button id="filter-button">Filter</button>
   <div id="empty">e</div>
 </nav>
-<form id="form1" class="form1 hidden">
+<form id="add-new-form" class="add-new-form form hidden">
   <label class="new-book-labels">Title: </label>
-  <input form="form1" type="text"></input>
+  <input form="add-new-form" type="text"></input>
   <label class="new-book-labels">Author Name: </label>
   <div id="author-name-div">
-    <input form="form1" type="text" id="name-input-first" placeholder="First Name"></input>
-    <input form="form1" type="text" id="name-input-last" placeholder="Last Name"></input>
+    <input form="add-new-form" type="text" id="name-input-first" placeholder="First Name"></input>
+    <input form="add-new-form" type="text" id="name-input-last" placeholder="Last Name"></input>
   </div>
   <label class="new-book-labels">Pages: </label>
-  <input form="form1" type="number"></input>
+  <input form="add-new-form" type="number"></input>
   <label class="new-book-labels">Year: </label>
-  <input form="form1" type="number"></input>
+  <input form="add-new-form" type="number"></input>
   <div id="new-read-wrapper">
-    <input form="form1" type="checkbox" name="new-read" id="new-read"/>
+    <input form="add-new-form" type="checkbox" name="new-read" id="new-read"/>
     <label for="new-read" class="new-book-labels" id="new-read-label">Read</label>
-    <button form="form1" type="submit" id="add-button">Add</button>
-    <button form="form1" type="button" id="cancel">Cancel</button> 
+    <button form="add-new-form" type="submit" id="add-button">Add</button>
+    <button form="add-new-form" type="button" id="clear">Clear</button> 
   </div> 
+</form>
+<form id="sort-form" class="form hidden">
+  <label for="sort-ascending"> 
+    <input name="upOrDown"
+      id="sort-ascending"
+      value="ascending"
+      type="radio"
+      checked/>Ascending
+  </label>
+  <label for="sort-descending"> 
+    <input name="upOrDown"
+      id="sort-descending"
+      value="descending"
+      type="radio"
+      />Descending
+  </label>
+  <div id="sort-by-heading">Sort By:</div>
+  <label for="sort-by-title"> 
+    <input name="category"
+      id="sort-by-title"
+      value="title"
+      type="radio"
+      />Title
+  </label>  
+  <label for="author-name-first"> 
+    <input name="category"
+      id="author-name-first"
+      value="authorFirst"
+      type="radio"
+      />Author's First Name
+  </label> 
+  <label for="author-name-last"> 
+    <input name="category"
+      id="author-name-last"
+      value="authorLast"
+      type="radio"
+      checked/>Author's Last Name
+  </label> 
+  <label for="sort-year"> 
+    <input name="category"
+      id="sort-year"
+      value="year"
+      type="radio"
+      />Year
+  </label>
+  <label for="sort-pages"> 
+    <input name="category"
+      id="sort-pages"
+      value="pages"
+      type="radio"
+      />Pages
+  </label> 
+  <label for="sort-id"> 
+    <input name="category"
+      id="sort-id"
+      value="id"
+      type="radio"
+      />Book ID#
+  </label>
+  <button form="sort-form" type="button" id="sort-submit">Sort</button>
 </form>
 <main id="main">
 </main>
@@ -51,7 +112,7 @@
   #empty {
     visibility: hidden;;
   }
-
+/* BOOKMARK BUTTONS */
   button {
     margin-bottom: 1vw;
     margin-left: 1.5vw;
@@ -67,14 +128,83 @@
     font-weight: bold;
     cursor: pointer;
   }
-  nav > button {
-
-  }
-  nav > button:active {
+  button:active {
     color: rgba(0, 0, 0, 0);
     border-color: rgba(0, 0, 0, 0);
   }
-
+  /* ADD BOOK */
+  #new-book-button {
+    margin-top: 2vw;
+  }
+    /* CREATE NEW BOOK FORM */
+    form {
+      background-color: ivory;
+      height: 35vw;
+      width: 30vw;
+      margin-left: 35vw;
+      margin-top: 5vw;
+      padding: 3vw;
+      z-index: 1;
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-width: 1px;
+      border-style: solid;
+      border-color:rgb(51, 51, 51);
+      border-radius: 5px;
+      font-size: 2vw;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+    }
+    #add-new-form > input {
+      width: 25vw;
+      height: 3vw;
+      margin: 1vw;
+    }
+    #new-read-wrapper {
+      display: flex;
+      padding-top: 2vw;
+    }
+    #new-read {
+      height: 2vw;
+      width: 2vw;
+    }
+    form > button {
+      color: black;
+      margin-top: -0.2vw;
+      font-weight: normal;
+      border-color: rgb(139, 139, 139);
+      border-width: 1.5px;
+    }
+    form > div > button {
+      color: black;
+      margin-top: -0.2vw;
+      font-weight: normal;
+      border-color: rgb(139, 139, 139);
+      border-width: 1.5px;
+    }
+    input[type="number"] {
+      border-color: black;
+      border-width: 1px;
+    }
+    #author-name-div {
+      display: flex;
+      flex-direction: row;
+    }
+    #name-input-first {
+      width: 11.5vw;
+      height: 2.5vw;
+      margin-right: 2vw;
+      margin-top: 1vw;
+    }
+    #name-input-last {
+      width: 11.5vw;
+      height: 2.5vw;
+      margin-bottom: 2vw;
+      margin-top: 1vw;
+    }
+  /* SEARCH */
   input[type="text"] {
     margin-bottom: .2vw;
     margin-left: 1.5vw;
@@ -88,61 +218,13 @@
   #search-form {
     margin-bottom: 0;
   }
-  #new-book-button {
+  /* SORT */
+  #sort-by-heading {
     margin-top: 2vw;
+    font-weight: bold;
   }
-  .form1 {
-    background-color: ivory;
-    height: 35vw;
-    width: 30vw;
-    margin-left: 35vw;
-    margin-top: 5vw;
-    padding: 3vw;
-    z-index: 1;
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    border-radius: 5px;
-    font-size: 2vw;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-  }
-  .form1 > input {
-    width: 25vw;
-    height: 3vw;
-    margin: 1vw;
-  }
-  #new-read-wrapper {
-    display: flex;
-    padding-top: 2vw;
-  }
-  #new-read {
-    height: 2vw;
-    width: 2vw;
-  }
-  #new-read-wrapper > button {
-    color: black;
-    margin-top: -0.2vw;
-    font-weight: normal;
-    border-color: rgb(139, 139, 139);
-    border-width: 1.5px;
-  }
-  #author-name-div {
-    display: flex;
-    flex-direction: row;
-  }
-  #name-input-first {
-    width: 11.5vw;
-    height: 2.5vw;
-    margin-right: 2vw;
-    margin-top: 1vw;
-  }
-  #name-input-last {
-    width: 11.5vw;
-    height: 2.5vw;
-    margin-bottom: 2vw;
-    margin-top: 1vw;
+  #sort-form > button {
+    margin-top: 2vw;
   }
 /* BOOKSHELF START */
   main {
@@ -179,6 +261,7 @@
     cursor: pointer;
     overflow:hidden;
   }
+  /* PICKED UP/"OPEN" BOOK */
   .book-onclick {
     position: fixed;
     height: max-content;
@@ -197,18 +280,19 @@
     border-left-style: solid;
     cursor: default;
   }
-  input[type="checkbox"] {
-    height: 2vw;
-    width: 2vw;
-  }
-  label[for=read] {
-    font-size: 2.2vw;
-  }
   .year {
     line-height: 0px;
     font-size: 2.2vw;
   }
   .pages {
+    font-size: 2.2vw;
+  }
+      /* READ? CHECKBOX */
+  input[type="checkbox"] {
+    height: 2vw;
+    width: 2vw;
+  }
+  label[for=read] {
     font-size: 2.2vw;
   }
   .delete-button {
@@ -218,18 +302,20 @@
     margin-left: 0;
     margin-top: 4vw;
     color: black;
-}
-.close-button {
+  }
+  .close-button {
     border-color: rgb(51, 51, 51);
     border-width: 1.5px;
     width: 9vw;
     margin-left: 3vw;
     margin-top: 4vw;
     color: black;
-}
+  }
+  /* SEARCH RESULTS */
  .raised {
   align-self:flex-start;
  }
+ /* HIDE */
   .hidden {
     visibility: hidden;
     position: fixed;
@@ -239,6 +325,8 @@
   //*to do later -- support for multiple authors? series?
   let mainLibrary = [];
   let tempLibrary = [];
+  let alphabet = "abcdefghijklmnopqrstuvwxyz";
+
 // LIBRARY CREATION
   const bookMakerConst = bookMaker;
   function bookMaker(title = "untitled", authorFirst = "unknown", authorLast = "unknown", pages = 0, year = 0, read = "off") {
@@ -250,6 +338,7 @@
     this.read = read;
   }
   function addBookToLibrary(book) {
+    book.id = mainLibrary.length + 1;
     mainLibrary.push(book);
   }
 
@@ -323,8 +412,8 @@
 //MAIN BOOK CREATION FUNCTION
   function render(library) {
     for (let i in library) {
-      if (!library[i].id) {
-        library[i].id = `${i}`;
+      // if (!library[i].id) {
+      //   library[i].id = `${i}`;
         if (i % 15 === 0) {
           if (document.getElementById("currentShelf")) {
             currentShelf.removeAttribute("id", "currentShelf");
@@ -337,7 +426,7 @@
           function createParentDiv(parent, newNode) {
             createAppend(parent, "div");
             classAdd(parent.lastChild, "book");
-            setID(parent.lastChild, `${i}`);
+            setID(parent.lastChild, `book${parseInt(i)+1}`);
             setText(parent.lastChild, `${library[i].title}`);
             setBookColor(parent.lastChild);
           }
@@ -395,7 +484,7 @@
         }
         bookMakerDOM(currentShelf, "div");
       }
-    }
+    // }
   }
   render(mainLibrary);
 //READ STATUS SAVE TO LIBRARY
@@ -447,35 +536,34 @@
   //OPEN NEW BOOK FORM
 document.getElementById("new-book-button").addEventListener("click", openNewBookForm);
   function openNewBookForm() {
-    let bookForm = document.getElementById("form1");
+    let bookForm = document.getElementById("add-new-form");
     bookForm.classList.toggle("hidden");
   }
   //ADD NEW BOOK
-let form1 = document.getElementById("form1");
-form1.addEventListener("submit", addNewBook);
+let addNewForm = document.getElementById("add-new-form");
+addNewForm.addEventListener("submit", addNewBook);
 function addNewBook(e){
   event.preventDefault();
-  let title = document.getElementById("form1").elements[0];
-  let authorFirst = document.getElementById("form1").elements[1];
-  let authorLast = document.getElementById("form1").elements[2];
-  let pages = document.getElementById("form1").elements[3];
-  let year = document.getElementById("form1").elements[4];
-  let read = document.getElementById("form1").elements[5];
+  let title = document.getElementById("add-new-form").elements[0];
+  let authorFirst = document.getElementById("add-new-form").elements[1];
+  let authorLast = document.getElementById("add-new-form").elements[2];
+  let pages = document.getElementById("add-new-form").elements[3];
+  let year = document.getElementById("add-new-form").elements[4];
+  let read = document.getElementById("add-new-form").elements[5];
   const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value, year.value, read.value);
   addBookToLibrary(newBook);
   render(mainLibrary);
   document.getElementById("currentShelf").lastElementChild.addEventListener("click", selectBook);
   openNewBookForm();
-  document.getElementById("form1").reset();
+  document.getElementById("add-new-form").reset();
 }
-  //CANCEL BUTTON
-let cancel = document.getElementById("cancel");  
-cancel.addEventListener("click", closeForm);
-function closeForm() {
-  openNewBookForm();
-  document.getElementById("form1").reset();
+  //CLEAR BUTTON
+let clear = document.getElementById("clear");  
+clear.addEventListener("click", clearForm);
+function clearForm() {
+  document.getElementById("add-new-form").reset();
 }
-//SEARCH BUTTON
+//SEARCH
 let searchForm = document.getElementById("search-form");
 searchForm.addEventListener("input", search);
 searchForm.addEventListener("submit", () => {event.preventDefault();});
@@ -483,8 +571,8 @@ searchForm.addEventListener("submit", () => {event.preventDefault();});
 function search(e){
   let searchQuery = document.getElementById("search-box").value;
   for (let i in mainLibrary) {
-    let bookID = mainLibrary[i].id;
-    let lowerCaseTitle = mainLibrary[i].title.toLowerCase();
+    let bookID = `book${mainLibrary[i].id}`;
+    console.log(bookID)
     if (!searchQuery) {document.getElementById(`${bookID}`).classList.remove("raised");}
     else {
       if (mainLibrary[i].title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1 || 
@@ -511,7 +599,115 @@ function toggleSearch() {
     document.getElementById("search-box").value = null;
     search();
 }
+// SORT
+document.getElementById("sort-button").addEventListener("click", openSortForm);
+let sortForm = document.getElementById("sort-form");
+function openSortForm() {
+  sortForm.classList.toggle("hidden");
+}
+
+function deleteMainDOM() {
+  let node = document.getElementById("main");
+  while (node.hasChildNodes()) {
+    node.removeChild(node.lastChild);
+  } 
+}
+document.getElementById("sort-submit").addEventListener("click", sort);
+function refreshDOM(lib) {
+  deleteMainDOM();
+  if (document.getElementById("sort-ascending").checked === false) {
+    let reverseLibrary = [...lib].reverse();
+    render(reverseLibrary);
+    for (let i = 0; i < bookClass.length; i++) {
+    bookClass[i].addEventListener("click", selectBook);
+    } 
+  }
+  if (document.getElementById("sort-ascending").checked === true) {
+    render(lib);
+    for (let i = 0; i < bookClass.length; i++) {
+    bookClass[i].addEventListener("click", selectBook);
+    }
+  }
+}
+function sort(e) {
+  tempLibrary = [...mainLibrary];
+  for (let i = 2; i < sortForm.length; i++) {
+    if (sortForm[i].checked !== false) {
+      switch (sortForm[i].value) {
+        case "title":
+              tempLibrary.sort(function(a, b) {
+                let varA = a.title.toUpperCase();
+                let varB = b.title.toUpperCase();
+                if (varA < varB) {
+                  return -1;
+                }
+                if (varA > varB) {
+                  return 1;
+                }
+                return 0;
+                });
+              refreshDOM(tempLibrary);
+              break;
+        case "authorFirst":
+              tempLibrary.sort(function(a, b) {
+                let varA = a.authorFirst.toUpperCase();
+                let varB = b.authorFirst.toUpperCase();
+                if (varA < varB) {
+                  return -1;
+                }
+                if (varA > varB) {
+                  return 1;
+                }
+                return 0;
+                });
+              refreshDOM(tempLibrary);
+              break;      
+        case "authorLast":
+              tempLibrary.sort(function(a, b) {
+                let varA = a.authorLast.toUpperCase();
+                let varB = b.authorLast.toUpperCase();
+                if (varA < varB) {
+                  return -1;
+                }
+                if (varA > varB) {
+                  return 1;
+                }
+                return 0;
+                });
+              refreshDOM(tempLibrary);
+              break;      
+        case "pages":
+              tempLibrary.sort(function (a, b) {
+                return a.pages - b.pages;
+              });
+              refreshDOM(tempLibrary);
+              break;     
+        case "year":
+              tempLibrary.sort(function (a, b) {
+                return a.year - b.year;
+              });
+              refreshDOM(tempLibrary);
+              break;   
+        case "id":
+              refreshDOM(mainLibrary);
+              break;          
+      }
+    }
+  }
+}
+
+document.getElementById("main").onclick = function(event) {
+if (!event.target.matches(".form")) {
+  let forms = document.getElementsByClassName("form");
+  for (let i = 0; i < forms.length; i++) {
+    let openForm = forms[i];
+    openForm.classList.add("hidden");
+  }
+}
+}
+
+
 //TO DO - SORT, FILTER
 //BACKEND
-//CLOSE & MOVE BOOK?
+// MOVE BOOK? FAVICON
 </script>
