@@ -475,12 +475,12 @@
             classAdd(parent.lastChild, "hidden", "delete-button");
           }
           deleteButton(parent.lastChild, "button");
-          // function closeButton(parent, newNode) {
-          //     createAppend(parent, newNode);
-          //     setText(parent.lastChild, "Close");
-          //     classAdd(parent.lastChild, "hidden", "close-button");
-          // }
-          // closeButton(parent.lastChild, "button");
+          function closeButton(parent, newNode) {
+              createAppend(parent, newNode);
+              setText(parent.lastChild, "Close");
+              classAdd(parent.lastChild, "hidden", "close-button");
+          }
+          closeButton(parent.lastChild, "button");
         }
         bookMakerDOM(currentShelf, "div");
       }
