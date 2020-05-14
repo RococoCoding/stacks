@@ -475,12 +475,12 @@
             classAdd(parent.lastChild, "hidden", "delete-button");
           }
           deleteButton(parent.lastChild, "button");
-          // function closeButton(parent, newNode) {
-          //     createAppend(parent, newNode);
-          //     setText(parent.lastChild, "Close");
-          //     classAdd(parent.lastChild, "hidden", "close-button");
-          // }
-          // closeButton(parent.lastChild, "button");
+          function closeButton(parent, newNode) {
+              createAppend(parent, newNode);
+              setText(parent.lastChild, "Close");
+              classAdd(parent.lastChild, "hidden", "close-button");
+          }
+          closeButton(parent.lastChild, "button");
         }
         bookMakerDOM(currentShelf, "div");
       }
@@ -634,61 +634,35 @@ function refreshDOM(lib) {
 }
 function sort(e) {
   tempLibrary = [...mainLibrary];
+  function sortByProp(prop) {
+    return function(a, b) {
+      let varA = a[prop].toUpperCase(), varB = b[prop].toUpperCase();
+      if (varA < varB) return -1;
+      if (varA > varB) return 1;
+      return 0;
+    }
+  }
   for (let i = 2; i < sortForm.length; i++) {
     if (sortForm[i].checked !== false) {
       switch (sortForm[i].value) {
         case "title":
-              tempLibrary.sort(function(a, b) {
-                let varA = a.title.toUpperCase();
-                let varB = b.title.toUpperCase();
-                if (varA < varB) {
-                  return -1;
-                }
-                if (varA > varB) {
-                  return 1;
-                }
-                return 0;
-                });
+              tempLibrary.sort(sortByProp('title'));
               refreshDOM(tempLibrary);
               break;
         case "authorFirst":
-              tempLibrary.sort(function(a, b) {
-                let varA = a.authorFirst.toUpperCase();
-                let varB = b.authorFirst.toUpperCase();
-                if (varA < varB) {
-                  return -1;
-                }
-                if (varA > varB) {
-                  return 1;
-                }
-                return 0;
-                });
+              tempLibrary.sort(sortByProp('authorFirst'));
               refreshDOM(tempLibrary);
               break;      
         case "authorLast":
-              tempLibrary.sort(function(a, b) {
-                let varA = a.authorLast.toUpperCase();
-                let varB = b.authorLast.toUpperCase();
-                if (varA < varB) {
-                  return -1;
-                }
-                if (varA > varB) {
-                  return 1;
-                }
-                return 0;
-                });
+              tempLibrary.sort(sortByProp('authorLast'));
               refreshDOM(tempLibrary);
               break;      
         case "pages":
-              tempLibrary.sort(function (a, b) {
-                return a.pages - b.pages;
-              });
+              tempLibrary.sort((a, b) => a.pages - b.pages);
               refreshDOM(tempLibrary);
               break;     
         case "year":
-              tempLibrary.sort(function (a, b) {
-                return a.year - b.year;
-              });
+              tempLibrary.sort((a, b) => a.year - b.year);
               refreshDOM(tempLibrary);
               break;   
         case "id":
