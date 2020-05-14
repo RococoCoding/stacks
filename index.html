@@ -555,7 +555,9 @@ function addNewBook(e){
   addBookToLibrary(newBook);
   deleteMainDOM();
   render(mainLibrary);
-  bookClass[i].addEventListener("click", selectBook);
+  for (let i = 0; i < bookClass.length; i++) {
+    bookClass[i].addEventListener("click", selectBook);
+  }
   document.getElementById("add-new-form").reset();
 }
   //CLEAR BUTTON
