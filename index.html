@@ -756,24 +756,32 @@ document.getElementById("filter-button").addEventListener("click", () => {
 });
 let filterForm = document.getElementById("filter-form");
 document.getElementById("filter-submit").addEventListener("click", openFilterForm);
+let counter = 0;
 function openFilterForm(e) {
+  counter++;
   let min = document.getElementById("filter-start").value;
   if (!min) min = 0;
   let max = document.getElementById("filter-end").value;
   if (!max) max = Math.pow(10, 1000);
   function filter(prop) {
     for (let i in mainLibrary) {
+    //   console.log(`counter: ${counter}`)
+    //   console.log(mainLibrary[i][prop])
+    //   console.log(`max: ${max} min: ${min}`)
+    //   console.log(mainLibrary[i][prop] <= min || mainLibrary[i][prop] >= max)
       if (mainLibrary[i][prop] <= min || mainLibrary[i][prop] >= max) {
         tempLibrary.push(mainLibrary[i]);
+        console.log("hello")
       }
-    }
-    for (let i = tempLibrary.length-1; i >= 0; i--) {
-      mainLibrary.splice(tempLibrary[i].id-1, 1);
+    }  
+    for (let i in tempLibrary) {
+      for (let j in mainLibrary) {
+        if (tempLibrary[i].id === mainLibrary[j].id) console.log(mainLibrary.splice(mainLibrary[j].id-1, 1));
+      }
     }
   }
   if (document.getElementById("filter-year").checked === true) {
-  filter("year");
-  refreshDOM(mainLibrary);
+    filter("year");
   }
   else filter("pages");
   refreshDOM(mainLibrary);
