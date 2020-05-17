@@ -272,7 +272,7 @@
   .shelf {
     background-color: #663800;
     grid-column: 2 / 3;
-    width: 80vw;
+    width: 78vw;
     display: grid;
     grid-auto-flow: column;
     grid-auto-rows: 30vw;
@@ -402,7 +402,7 @@
   const theHobbit2 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
   const cryptonomicon2 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
   const graveyardBook2 = new bookMaker("The Graveyard Book #32", "Neil", "Gaiman", 307, 2008, "on");
-  const longBook = new bookMaker("the longest book title ever: can't stop me now I'll just keep going haha", "superlonglong", "extralonglongname", "10,000", 2008, "no");
+  const longBook = new bookMaker("the longest book title ever: can't stop me now I'll just keep going haha", "superlonglong", "extralonglongname", 10000, 2008, "no");
 
   addBookToLibrary(anubisGates);
   addBookToLibrary(colorOfMagic);
@@ -749,21 +749,26 @@ function openFilterForm(e) {
   if (!min) min = 0;
   let max = document.getElementById("filter-end").value;
   if (!max) max = Math.pow(10, 1000);
-      function filter(prop) {
-      for (let i in mainLibrary) {
-        if (mainLibrary[i][prop] <= min || mainLibrary[i][prop] >= max) {
-          document.getElementById(`book${mainLibrary[i].id}`).remove();
-          tempLibrary.push(mainLibrary.splice(i, 1));
-          render(mainLibrary);
-        }
+  function filter(prop) {
+    for (let i in mainLibrary) {
+      if (mainLibrary[i][prop] <= min || mainLibrary[i][prop] >= max) {
+        tempLibrary.push(mainLibrary[i]);
       }
     }
-    if (document.getElementById("filter-year").checked === true) {
-    filter("year");
+    for (let i = tempLibrary.length-1; i >= 0; i--) {
+      console.log(tempLibrary[i].title)
+      console.log(mainLibrary.splice(tempLibrary[i].id-1, 1));
+      // mainLibrary.splice(tempLibrary[i].id-1, 1);
+    }
   }
-  if (document.getElementById("filter-pages").checked === true) {
-    filter("pages");
+  if (document.getElementById("filter-year").checked === true) {
+  filter("year");
+  deleteMainDOM();
+  render(mainLibrary);
   }
+  else filter("pages");
+  deleteMainDOM();
+  render(mainLibrary);
 }
 
 //RESET BUTTON 
@@ -777,7 +782,7 @@ function reset() {
   render(mainLibrary);
 }
 
-//TO DO - BACKENDk
+//TO DO - BACKEND
 // MOVE BOOK? FAVICON
 // BOOK STATS? # OF BOOKS, BOOKS READ
 // COLOR - replace close button; set click outside book to close
