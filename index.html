@@ -433,10 +433,9 @@
 // COLOR PICKER
   function colorPicker() {
     let num = Math.floor(Math.random() * 10);
-    let colorArray = [["#ff756b", 1], ["lightseagreen", 2], ["#6bceff", 3], ["#7375c7", 4], ["#ddc0fa", 5], ["#ac84ad", 6], ["#d8db93", 7], ["#a68b46", 8], ["#76deb2", 9], ["#8bb586", 0]]
+    let colorArray = ["#ff756b", "lightseagreen", "#6bceff", "#7375c7", "#ddc0fa", "#ac84ad", "#d8db93", "#a68b46", "#76deb2", "#8bb586"]
     for (let i in colorArray) {
-      if (colorArray[i].includes(num)) {
-        return colorArray[i][0];
+      if (i === num) return colorArray[i];
       }
     }
   }
@@ -800,5 +799,4 @@ function reset() {
 //TO DO - BACKEND
 // MOVE BOOK? FAVICON
 // BOOK STATS? # OF BOOKS, BOOKS READ
-// COLOR - replace close button
 </script>
