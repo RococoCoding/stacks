@@ -8,10 +8,12 @@
   <div id="search-form">
     <input form="search-form" type="text" id="search-box" class="hidden" placeholder="Title/Name"></input>
     <button form="search-form" id="search-button" type="button" onclick="toggleSearch()">Search</button>
-</div>
+  </div>
   <button id="sort-button">Sort</button>
   <button id="filter-button">Filter</button>
   <button id="reset-button">Reset</button>
+  <button id="delLib-button">Delete</button>
+  <div id="stats"></div>
   <div id="empty">e</div>
 </nav>
 <form id="new-form" class="new-form form hidden">
@@ -136,7 +138,7 @@
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0);
     display: grid;
-    grid-template-rows: auto auto auto auto auto 5vw;
+    grid-template-rows: repeat(7, auto) 9vw 5vw;
   }
   #empty {
     visibility: hidden;
@@ -376,13 +378,31 @@
   let tempLibrary = [];
   // LOCAL STORAGE
   // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY
-  let localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary"));
-if (localStorage.getItem("currentLibrary")) setFromStorage();
-function setFromStorage() {
-  mainLibrary = localStorageLibrary;
+let cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
+
+if (localStorage.getItem("currentLibrary")) {
+  let localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary")); 
+    function setFromStorage() {
+      mainLibrary = localStorageLibrary;
+    }
+  setFromStorage();  
+}
+else {
+  const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "off");
+  const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
+  const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
+  const theHobbit = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
+  const cryptonomicon = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
+  const graveyardBook = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
+
+  addBookToLibrary(anubisGates);
+  addBookToLibrary(colorOfMagic);
+  addBookToLibrary(theHobbit);
+  addBookToLibrary(cryptonomicon);
+  addBookToLibrary(graveyardBook);
+  addBookToLibrary(storyOfStone);
 }
 
-let cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
 
 function setStorage() { //UPDATING LOCAL STORAGE
   localStorage.setItem("currentLibrary", JSON.stringify(cloneLibrary));
@@ -406,46 +426,6 @@ function setStorage() { //UPDATING LOCAL STORAGE
     cloneLibrary.push(book);
     setStorage();
   }
-
-  // const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "off");
-  // const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
-  // const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
-  // const theHobbit = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
-  // const cryptonomicon = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
-  // const graveyardBook = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
-  // const anubisGates1 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "on");
-  // const colorOfMagic1 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
-  // const storyOfStone1 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
-  // const theHobbit1 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
-  // const cryptonomicon1 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
-  // const graveyardBook1 = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
-  // const anubisGates2 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "on");
-  // const colorOfMagic2 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
-  // const storyOfStone2 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
-  // const theHobbit2 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
-  // const cryptonomicon2 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
-  // const graveyardBook2 = new bookMaker("The Graveyard Book #32", "Neil", "Gaiman", 307, 2008, "on");
-  // const longBook = new bookMaker("the longest book title ever: can't stop me now I'll just keep going haha", "superlonglong", "extralonglongname", 10000, 2008, "no");
-
-  // addBookToLibrary(anubisGates);
-  // addBookToLibrary(colorOfMagic);
-  // addBookToLibrary(anubisGates1);
-  // addBookToLibrary(theHobbit);
-  // addBookToLibrary(cryptonomicon);
-  // addBookToLibrary(colorOfMagic1);
-  // addBookToLibrary(graveyardBook);
-  // addBookToLibrary(storyOfStone);
-  // addBookToLibrary(cryptonomicon1);
-  // addBookToLibrary(storyOfStone1);
-  // addBookToLibrary(anubisGates2);
-  // addBookToLibrary(theHobbit1);
-  // addBookToLibrary(storyOfStone2);
-  // addBookToLibrary(theHobbit2);
-  // addBookToLibrary(graveyardBook1);
-  // addBookToLibrary(cryptonomicon2);
-  // addBookToLibrary(colorOfMagic2);
-  // addBookToLibrary(graveyardBook2);
-  // addBookToLibrary(longBook);
 
 // COLOR PICKER
   function colorPicker() {
@@ -773,22 +753,15 @@ document.getElementById("filter-button").addEventListener("click", () => {
 });
 let filterForm = document.getElementById("filter-form");
 document.getElementById("filter-submit").addEventListener("click", openFilterForm);
-let counter = 0;
 function openFilterForm(e) {
-  counter++;
   let min = document.getElementById("filter-start").value;
   if (!min) min = 0;
   let max = document.getElementById("filter-end").value;
   if (!max) max = Math.pow(10, 1000);
   function filter(prop) {
     for (let i in mainLibrary) {
-    //   console.log(`counter: ${counter}`)
-    //   console.log(mainLibrary[i][prop])
-    //   console.log(`max: ${max} min: ${min}`)
-    //   console.log(mainLibrary[i][prop] <= min || mainLibrary[i][prop] >= max)
       if (mainLibrary[i][prop] <= min || mainLibrary[i][prop] >= max) {
         tempLibrary.push(mainLibrary[i]);
-        // console.log(mainLibrary[i])
       }
     }  
     for (let i in tempLibrary) {
@@ -810,8 +783,16 @@ function reset() {
   deleteMainDOM();
   render(cloneLibrary);
 }
+//DELETE LIBRARY
+document.getElementById("delLib-button").addEventListener("click", deleteLibrary);
+function deleteLibrary() {
+  localStorage.removeItem("currentLibrary");
+  deleteMainDOM();
+  mainLibrary = [];
+  cloneLibrary = [];
+  tempLibrary = [];
+}
 
-//TO DO - BACKEND
 // MOVE BOOK? FAVICON
 // BOOK STATS? # OF BOOKS, BOOKS READ
 </script>
