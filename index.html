@@ -382,6 +382,7 @@
     this.pages = pages;
     this.year = year;
     this.read = read;
+    this.color = colorPicker();
   }
   function addBookToLibrary(book) {
     book.id = mainLibrary.length + 1;
@@ -453,11 +454,12 @@
   function setText(element, text) {
     element.textContent = text
   }
-  function setBookColor(element) {
-    element.style.backgroundColor = `${colorPicker()}`;
+  function setBookColor(element, color) {
+    element.style.backgroundColor = `${color}`;
   }
 //MAIN BOOKSHELF CREATION FUNCTION
   function render(library) {
+    // IF NO BOOKS IN LIBRARY, RENDER EMPTY SHELF
     if (library.length === 0) {
       main.appendChild(document.createElement("section"));
       main.lastChild.setAttribute("id", "currentShelf");
@@ -467,9 +469,8 @@
     }
     else { 
       for (let i in library) {
-        // if (!library[i].id) {
-        //   library[i].id = `${i}`;
           if (i % 15 === 0) {
+            // RENDER FIRST SHELF
             if (document.getElementById("currentShelf")) {
               currentShelf.removeAttribute("id", "currentShelf");
             }
@@ -477,13 +478,14 @@
             main.lastChild.setAttribute("id", "currentShelf");
             main.lastChild.classList.add("shelf");
           }    
+          //RENDER BOOKS
           function bookMakerDOM(parent, newNode) {
             function createParentDiv(parent, newNode) {
               createAppend(parent, "div");
               classAdd(parent.lastChild, "book");
               setID(parent.lastChild, `book${library[i].id}`);
               setText(parent.lastChild, `${library[i].title}`);
-              setBookColor(parent.lastChild);
+              setBookColor(parent.lastChild, `${library[i].color}`);
             }
             createParentDiv(parent, newNode);
             function addAuthorName(parent, newNode) {
@@ -538,7 +540,6 @@
             closeButton(parent.lastChild, "button");
           }
           bookMakerDOM(currentShelf, "div");
-        // }
       }
     }
   }
@@ -799,5 +800,5 @@ function reset() {
 //TO DO - BACKEND
 // MOVE BOOK? FAVICON
 // BOOK STATS? # OF BOOKS, BOOKS READ
-// COLOR - replace close button; set click outside book to close
+// COLOR - replace close button
 </script>
