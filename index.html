@@ -136,7 +136,7 @@
     grid-template-rows: auto auto auto auto auto 5vw;
   }
   #empty {
-    visibility: hidden;;
+    visibility: hidden;
   }
 /* BOOKMARK BUTTONS */
   button {
@@ -281,6 +281,9 @@
     border-width: 1vw;
     align-items: end;
     justify-content: start;
+  }
+  .empty {
+    color:rgba(0, 0, 0, 0);
   }
   .book {
     background-color: lightseagreen;
@@ -451,82 +454,91 @@
   function setBookColor(element) {
     element.style.backgroundColor = `${colorPicker()}`;
   }
-//MAIN BOOK CREATION FUNCTION
+//MAIN BOOKSHELF CREATION FUNCTION
   function render(library) {
-    for (let i in library) {
-      // if (!library[i].id) {
-      //   library[i].id = `${i}`;
-        if (i % 15 === 0) {
-          if (document.getElementById("currentShelf")) {
-            currentShelf.removeAttribute("id", "currentShelf");
-          }
-          main.appendChild(document.createElement("section"));
-          main.lastChild.setAttribute("id", "currentShelf");
-          main.lastChild.classList.add("shelf");
-        }       
-        function bookMakerDOM(parent, newNode) {
-          function createParentDiv(parent, newNode) {
-            createAppend(parent, "div");
-            classAdd(parent.lastChild, "book");
-            setID(parent.lastChild, `book${library[i].id}`);
-            setText(parent.lastChild, `${library[i].title}`);
-            setBookColor(parent.lastChild);
-          }
-          createParentDiv(parent, newNode);
-          function addAuthorName(parent, newNode) {
-            createAppend(parent, newNode);
-            setText(parent.lastChild, `${library[i].authorFirst} ${library[i].authorLast}`);
-            classAdd(parent.lastChild, "hidden");
-          }
-          addAuthorName(parent.lastChild, "p");
-          function addYear(parent, newNode) {
-            createAppend(parent, newNode);
-            setText(parent.lastChild, `Year: ${library[i].year}`);
-            classAdd(parent.lastChild, "hidden", "year");
-          }
-          addYear(parent.lastChild, "p");
-          function addPages(parent, newNode) {
-            createAppend(parent, newNode);
-            setText(parent.lastChild, `Pages: ${library[i].pages}`);
-            classAdd(parent.lastChild, "hidden", "pages");
-          }
-          addPages(parent.lastChild, "p");
-          function createReadBox(parent, newNode) {
-            createAppend(parent, newNode);
-            classAdd(parent.lastChild, "hidden", "box-wrapper");
-            function createInput(parent, newNode) {
-              createAppend(parent, newNode);
-              parent.lastChild.setAttribute("type", "checkbox");
-              parent.lastChild.name = "read";
-              parent.lastChild.id = `read${i}`;
-              if (library[i].read === "on") {
-                parent.lastChild.checked = true;
-              }
-              else parent.lastChild.checked = false;
-              createAppend(parent, "label");
-              parent.lastChild.setAttribute("for", `read${i}`);
-              setText(parent.lastChild, "Read");
+    if (library.length === 0) {
+      main.appendChild(document.createElement("section"));
+      main.lastChild.setAttribute("id", "currentShelf");
+      main.lastChild.classList.add("shelf");
+      document.getElementById("currentShelf").textContent = "e";
+      document.getElementById("currentShelf").classList.add("empty");
+    }
+    else { 
+      for (let i in library) {
+        // if (!library[i].id) {
+        //   library[i].id = `${i}`;
+          if (i % 15 === 0) {
+            if (document.getElementById("currentShelf")) {
+              currentShelf.removeAttribute("id", "currentShelf");
             }
-            createInput(parent.lastChild, "input");
-          }
-          createReadBox(parent.lastChild, "div");
-          function deleteButton(parent, newNode) {
-            createAppend(parent, newNode);
-            setText(parent.lastChild, "Delete");
-            parent.lastChild.id = "delete-button";
-            classAdd(parent.lastChild, "hidden", "delete-button");
-          }
-          deleteButton(parent.lastChild, "button");
-          function closeButton(parent, newNode) {
+            main.appendChild(document.createElement("section"));
+            main.lastChild.setAttribute("id", "currentShelf");
+            main.lastChild.classList.add("shelf");
+          }    
+          function bookMakerDOM(parent, newNode) {
+            function createParentDiv(parent, newNode) {
+              createAppend(parent, "div");
+              classAdd(parent.lastChild, "book");
+              setID(parent.lastChild, `book${library[i].id}`);
+              setText(parent.lastChild, `${library[i].title}`);
+              setBookColor(parent.lastChild);
+            }
+            createParentDiv(parent, newNode);
+            function addAuthorName(parent, newNode) {
               createAppend(parent, newNode);
-              setText(parent.lastChild, "Close");
-              classAdd(parent.lastChild, "hidden", "close-button");
+              setText(parent.lastChild, `${library[i].authorFirst} ${library[i].authorLast}`);
+              classAdd(parent.lastChild, "hidden");
+            }
+            addAuthorName(parent.lastChild, "p");
+            function addYear(parent, newNode) {
+              createAppend(parent, newNode);
+              setText(parent.lastChild, `Year: ${library[i].year}`);
+              classAdd(parent.lastChild, "hidden", "year");
+            }
+            addYear(parent.lastChild, "p");
+            function addPages(parent, newNode) {
+              createAppend(parent, newNode);
+              setText(parent.lastChild, `Pages: ${library[i].pages}`);
+              classAdd(parent.lastChild, "hidden", "pages");
+            }
+            addPages(parent.lastChild, "p");
+            function createReadBox(parent, newNode) {
+              createAppend(parent, newNode);
+              classAdd(parent.lastChild, "hidden", "box-wrapper");
+              function createInput(parent, newNode) {
+                createAppend(parent, newNode);
+                parent.lastChild.setAttribute("type", "checkbox");
+                parent.lastChild.name = "read";
+                parent.lastChild.id = `read${i}`;
+                if (library[i].read === "on") {
+                  parent.lastChild.checked = true;
+                }
+                else parent.lastChild.checked = false;
+                createAppend(parent, "label");
+                parent.lastChild.setAttribute("for", `read${i}`);
+                setText(parent.lastChild, "Read");
+              }
+              createInput(parent.lastChild, "input");
+            }
+            createReadBox(parent.lastChild, "div");
+            function deleteButton(parent, newNode) {
+              createAppend(parent, newNode);
+              setText(parent.lastChild, "Delete");
+              parent.lastChild.id = "delete-button";
+              classAdd(parent.lastChild, "hidden", "delete-button");
+            }
+            deleteButton(parent.lastChild, "button");
+            function closeButton(parent, newNode) {
+                createAppend(parent, newNode);
+                setText(parent.lastChild, "Close");
+                classAdd(parent.lastChild, "hidden", "close-button");
+            }
+            closeButton(parent.lastChild, "button");
           }
-          closeButton(parent.lastChild, "button");
-        }
-        bookMakerDOM(currentShelf, "div");
+          bookMakerDOM(currentShelf, "div");
+        // }
       }
-    // }
+    }
   }
   render(mainLibrary);
 //READ STATUS SAVE TO LIBRARY
@@ -756,9 +768,7 @@ function openFilterForm(e) {
       }
     }
     for (let i = tempLibrary.length-1; i >= 0; i--) {
-      console.log(tempLibrary[i].title)
-      console.log(mainLibrary.splice(tempLibrary[i].id-1, 1));
-      // mainLibrary.splice(tempLibrary[i].id-1, 1);
+      mainLibrary.splice(tempLibrary[i].id-1, 1);
     }
   }
   if (document.getElementById("filter-year").checked === true) {
