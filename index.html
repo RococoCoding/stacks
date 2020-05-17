@@ -370,6 +370,7 @@
 <script>
   //*to do later -- support for multiple authors? series?
   let mainLibrary = [];
+  let cloneLibrary = [...mainLibrary];
   let tempLibrary = [];
 
 // LIBRARY CREATION
@@ -385,6 +386,7 @@
   function addBookToLibrary(book) {
     book.id = mainLibrary.length + 1;
     mainLibrary.push(book);
+    cloneLibrary.push(book);
   }
 
   const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "off");
@@ -771,12 +773,12 @@ function openFilterForm(e) {
     //   console.log(mainLibrary[i][prop] <= min || mainLibrary[i][prop] >= max)
       if (mainLibrary[i][prop] <= min || mainLibrary[i][prop] >= max) {
         tempLibrary.push(mainLibrary[i]);
-        console.log("hello")
+        // console.log(mainLibrary[i])
       }
     }  
     for (let i in tempLibrary) {
-      for (let j in mainLibrary) {
-        if (tempLibrary[i].id === mainLibrary[j].id) console.log(mainLibrary.splice(mainLibrary[j].id-1, 1));
+      for (let j = mainLibrary.length -1; j >= 0; j--) {
+        if (tempLibrary[i].id === mainLibrary[j].id) mainLibrary.splice(j, 1);
       }
     }
   }
@@ -791,11 +793,7 @@ function openFilterForm(e) {
 document.getElementById("reset-button").addEventListener("click", reset);
 function reset() {
   deleteMainDOM();
-  mainLibrary.sort((a, b) => a.id - b.id);  
-  for (let i in tempLibrary) {
-    mainLibrary.splice(tempLibrary[i].id-1, 0, tempLibrary[i]);
-  }
-  render(mainLibrary);
+  render(cloneLibrary);
 }
 
 //TO DO - BACKEND
