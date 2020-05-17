@@ -372,13 +372,26 @@
 </style>
 <script>
   //*to do later -- support for multiple authors? series?
-  let mainLibrary = [];
-  let cloneLibrary = [...mainLibrary];
+  let mainLibrary = [];  //MAIN LIBRARY BLANK
   let tempLibrary = [];
+  // LOCAL STORAGE
+  // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY
+  let localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary"));
+if (localStorage.getItem("currentLibrary")) setFromStorage();
+function setFromStorage() {
+  mainLibrary = localStorageLibrary;
+}
+
+let cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
+
+function setStorage() { //UPDATING LOCAL STORAGE
+  localStorage.setItem("currentLibrary", JSON.stringify(cloneLibrary));
+  localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary"));
+}
 
 // LIBRARY CREATION
   const bookMakerConst = bookMaker;
-  function bookMaker(title = "untitled", authorFirst = "unknown", authorLast = "unknown", pages = 0, year = 0, read = "off") {
+  function bookMaker(title, authorFirst, authorLast, pages = 0, year = 0, read) {
     this.title = title;
     this.authorFirst = authorFirst;
     this.authorLast = authorLast;
@@ -391,54 +404,55 @@
     book.id = mainLibrary.length + 1;
     mainLibrary.push(book);
     cloneLibrary.push(book);
+    setStorage();
   }
 
-  const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "off");
-  const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
-  const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
-  const theHobbit = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
-  const cryptonomicon = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
-  const graveyardBook = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
-  const anubisGates1 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "on");
-  const colorOfMagic1 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
-  const storyOfStone1 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
-  const theHobbit1 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
-  const cryptonomicon1 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
-  const graveyardBook1 = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
-  const anubisGates2 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "on");
-  const colorOfMagic2 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
-  const storyOfStone2 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
-  const theHobbit2 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
-  const cryptonomicon2 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
-  const graveyardBook2 = new bookMaker("The Graveyard Book #32", "Neil", "Gaiman", 307, 2008, "on");
-  const longBook = new bookMaker("the longest book title ever: can't stop me now I'll just keep going haha", "superlonglong", "extralonglongname", 10000, 2008, "no");
+  // const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "off");
+  // const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
+  // const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
+  // const theHobbit = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
+  // const cryptonomicon = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
+  // const graveyardBook = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
+  // const anubisGates1 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "on");
+  // const colorOfMagic1 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
+  // const storyOfStone1 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
+  // const theHobbit1 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
+  // const cryptonomicon1 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
+  // const graveyardBook1 = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
+  // const anubisGates2 = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "on");
+  // const colorOfMagic2 = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
+  // const storyOfStone2 = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
+  // const theHobbit2 = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
+  // const cryptonomicon2 = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
+  // const graveyardBook2 = new bookMaker("The Graveyard Book #32", "Neil", "Gaiman", 307, 2008, "on");
+  // const longBook = new bookMaker("the longest book title ever: can't stop me now I'll just keep going haha", "superlonglong", "extralonglongname", 10000, 2008, "no");
 
-  addBookToLibrary(anubisGates);
-  addBookToLibrary(colorOfMagic);
-  addBookToLibrary(anubisGates1);
-  addBookToLibrary(theHobbit);
-  addBookToLibrary(cryptonomicon);
-  addBookToLibrary(colorOfMagic1);
-  addBookToLibrary(graveyardBook);
-  addBookToLibrary(storyOfStone);
-  addBookToLibrary(cryptonomicon1);
-  addBookToLibrary(storyOfStone1);
-  addBookToLibrary(anubisGates2);
-  addBookToLibrary(theHobbit1);
-  addBookToLibrary(storyOfStone2);
-  addBookToLibrary(theHobbit2);
-  addBookToLibrary(graveyardBook1);
-  addBookToLibrary(cryptonomicon2);
-  addBookToLibrary(colorOfMagic2);
-  addBookToLibrary(graveyardBook2);
-  addBookToLibrary(longBook);
+  // addBookToLibrary(anubisGates);
+  // addBookToLibrary(colorOfMagic);
+  // addBookToLibrary(anubisGates1);
+  // addBookToLibrary(theHobbit);
+  // addBookToLibrary(cryptonomicon);
+  // addBookToLibrary(colorOfMagic1);
+  // addBookToLibrary(graveyardBook);
+  // addBookToLibrary(storyOfStone);
+  // addBookToLibrary(cryptonomicon1);
+  // addBookToLibrary(storyOfStone1);
+  // addBookToLibrary(anubisGates2);
+  // addBookToLibrary(theHobbit1);
+  // addBookToLibrary(storyOfStone2);
+  // addBookToLibrary(theHobbit2);
+  // addBookToLibrary(graveyardBook1);
+  // addBookToLibrary(cryptonomicon2);
+  // addBookToLibrary(colorOfMagic2);
+  // addBookToLibrary(graveyardBook2);
+  // addBookToLibrary(longBook);
 
 // COLOR PICKER
   function colorPicker() {
     let num = Math.floor(Math.random() * 10);
     let colorArray = ["#ff756b", "lightseagreen", "#6bceff", "#7375c7", "#ddc0fa", "#ac84ad", "#d8db93", "#a68b46", "#76deb2", "#8bb586"]
     for (let i in colorArray) {
-      if (i === num) return colorArray[i];
+      if (i == num) return colorArray[i];
     }
   }
 
@@ -556,7 +570,6 @@
        let id = e.target.id;
        id = parseInt(id.slice(4));
        mainLibrary[id].read = "on";
-       console.log(mainLibrary[id].read)
      }
   }
 //SELECTING BOOK / EVENT LISTENER
@@ -630,7 +643,7 @@ function addNewBook(e){
   let year = document.getElementById("new-form").elements[4];
   let read = document.getElementById("new-form").elements[5];
   read.checked === false ? read.value = "off": read.value = "on";
-  const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value, year.value, read.value);
+  const newBook = new bookMaker(title.value = "Untitled", authorFirst.value = "Unknown", authorLast.value = "Unknown", pages.value = 0, year.value, read.value);
   addBookToLibrary(newBook);
   deleteMainDOM();
   render(mainLibrary);
