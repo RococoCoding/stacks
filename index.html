@@ -763,12 +763,10 @@ function openFilterForm(e) {
   }
   if (document.getElementById("filter-year").checked === true) {
   filter("year");
-  deleteMainDOM();
-  render(mainLibrary);
+  refreshDOM(mainLibrary);
   }
   else filter("pages");
-  deleteMainDOM();
-  render(mainLibrary);
+  refreshDOM(mainLibrary);
 }
 
 //RESET BUTTON 
