@@ -648,6 +648,9 @@ function refreshDOM(lib) {
             console.log(mainLibrary[i].id)
             if (mainLibrary[i].id == bookID) {
               mainLibrary.splice(i, 1);
+              cloneLibrary.splice(i, 1);
+              setStorage();
+              document.getElementById("books-number").textContent = `Books: ${cloneLibrary.length}`;
             }
           }
         }
@@ -841,7 +844,7 @@ function deleteLibrary() {
   }
 }
 
-// MOVE BOOK? FAVICON
+// MOVE BOOK? 
 // CLOSE BUTTON/CLICK OUTSIDE?
 // mobile :sad:
 </script>
