@@ -367,14 +367,14 @@
     border-color: rgb(51, 51, 51);
     color: black;
   }
-  .close-button {
+  /* .close-button {
     border-color: rgb(51, 51, 51);
     border-width: 1.5px;
     width: 9vw;
     margin-left: 3vw;
     margin-top: 4vw;
     color: black;
-  }
+  } */
   /* SEARCH RESULTS */
  .raised {
   align-self:flex-start;
@@ -402,7 +402,7 @@ if (localStorage.getItem("currentLibrary")) {
   let localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary")); 
     function setFromStorage() {
       mainLibrary = localStorageLibrary;
-      counter++;
+      counter++; //counter so the stock library only loads first time
       localStorage.setItem("loadCount", `${counter}`); 
     }
   setFromStorage();  
@@ -500,16 +500,8 @@ function setStorage() {
 
 //MAIN BOOKSHELF CREATION FUNCTION
   function render(library) {
-    // IF NO BOOKS IN LIBRARY, RENDER EMPTY SHELF
-    // if (library.length === 0) {
-    //   main.appendChild(document.createElement("section"));
-    //   main.lastChild.setAttribute("id", "currentShelf");
-    //   main.lastChild.classList.add("shelf");
-    //   document.getElementById("currentShelf").textContent = "e";
-    //   document.getElementById("currentShelf").classList.add("empty");
-    // }
-    // else { 
       for (let i in library) {
+        // SHELF CREATION - couldn't figure out how to get it to auto drop to next shelf with grid, so fixed width books, 15 every shelf
           if (i % 15 === 0) {
             if (document.getElementById("currentShelf")) {
               currentShelf.removeAttribute("id", "currentShelf");
@@ -518,7 +510,7 @@ function setStorage() {
             main.lastChild.setAttribute("id", "currentShelf");
             main.lastChild.classList.add("shelf");
             let currentShelf = document.getElementById("currentShelf");
-            currentShelf.appendChild(document.createElement("span"));
+            currentShelf.appendChild(document.createElement("span")); //invisible item to force shelf to appear even when section is empty
             currentShelf.lastChild.setAttribute("id", "force-empty-shelf");
           }    
           //RENDER BOOKS
@@ -575,12 +567,12 @@ function setStorage() {
               classAdd(parent.lastChild, "hidden", "delete-button");
             }
             deleteButton(parent.lastChild, "button");
-            function closeButton(parent, newNode) {
-                createAppend(parent, newNode);
-                setText(parent.lastChild, "Close");
-                classAdd(parent.lastChild, "hidden", "close-button");
-            }
-            closeButton(parent.lastChild, "button");
+            // function closeButton(parent, newNode) {
+            //     createAppend(parent, newNode);
+            //     setText(parent.lastChild, "Close");
+            //     classAdd(parent.lastChild, "hidden", "close-button");
+            // }
+            // closeButton(parent.lastChild, "button");
           }
           bookMakerDOM(currentShelf, "div");
       }
@@ -647,17 +639,16 @@ function refreshDOM(lib) {
     if (e.target.type !== "checkbox") {
       if (e.target.id !== "delete-button") {
         for (let i = 0; i < forms.length; i++) {
-          if (!forms[i].classList.contains("hidden")) return;
+          if (!forms[i].classList.contains("hidden")) return; //don't open book if a form is open
         }
-        let children = e.currentTarget.childNodes;
-          e.currentTarget.classList.toggle("book-onclick");
-          for (let i in children) {
-            if (children[i].classList) {
-              children[i].classList.toggle("hidden");
-            }
+        let children = curTarg.childNodes;
+        curTarg.classList.toggle("book-onclick"); // opens book
+        for (let i in children) {
+          if (children[i].classList) {
+            children[i].classList.toggle("hidden"); 
           }
-      }
-    //DELETE BOOK
+        }
+      } //DELETE BOOK
       else {
         if (confirm('Are you sure you want to delete this book from the database?')) {
           let bookID = e.currentTarget.id.slice(4);
@@ -680,16 +671,29 @@ function refreshDOM(lib) {
   }
 
 //*CLICK OUTSIDE FORM TO CLOSE*
-window.onclick = function(event) {
+window.onclick = function(e) {
   let forms = document.getElementsByClassName("form");
   let books = document.getElementsByClassName("book");
   for (let i = 0; i < forms.length; i++) {
     if (!forms[i].classList.contains("hidden")) {
-      let formSplit = forms[i].id.split("-");
-      let buttonID = `${formSplit[0]}-button`;
-      if (event.target !== forms[i] && !forms[i].contains(event.target) && 
-        !event.target.matches(`#${buttonID}`)) {
+      let formSplit = forms[i].id.split("-"); // "${operation}-form" to "${operation}-button" to exclude associated button
+      let buttonID = `${formSplit[0]}-button`; 
+      if (e.target !== forms[i] && !forms[i].contains(e.target) && 
+        !e.target.matches(`#${buttonID}`)) {//exclude form itself && its children nodes && its associated button
           forms[i].classList.add("hidden");
+      }
+    }
+  }
+  for (let i = 0; i < books.length; i++) {
+    if (books[i].classList.contains("book-onclick")) {
+      if (e.target !== books[i] && !books[i].contains(e.target)) {
+        books[i].classList.toggle("book-onclick");
+        let children = books[i].childNodes;
+        for (let i in children) {
+          if (children[i].classList) {
+            children[i].classList.toggle("hidden"); 
+          }
+        }
       }
     }
   }
@@ -870,6 +874,5 @@ function deleteLibrary() {
 }
 
 // MOVE BOOK? 
-// CLOSE BUTTON/CLICK OUTSIDE?
 // mobile :sad:
 </script>
