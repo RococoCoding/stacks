@@ -426,14 +426,16 @@ else {
 
 cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
 // BOOKS TOTAL STAT INITIAL LOAD
-document.getElementById("books-number").textContent = `Books: ${cloneLibrary.length}`;
+let booksNumber = document.getElementById("books-number");
+booksNumber.textContent = `Books: ${cloneLibrary.length}`;
 
 // BOOK READ STAT INITIAL LOAD
 let readCounter = 0; 
+let readNumber = document.getElementById("read-number");
 for (let i in mainLibrary) {
   if (mainLibrary[i].read === "on") readCounter++; 
 }
-document.getElementById("read-number").textContent = `Read: ${readCounter}`;
+readNumber.textContent = `Read: ${readCounter}`;
 
 //UPDATING LOCAL STORAGE
 function setStorage() { 
@@ -453,13 +455,17 @@ function setStorage() {
     this.year        = year        || 0;
     this.read        = read        || "off";
     this.color       = colorPicker();
+    if (this.read === "on") {
+      readCounter++;
+      readNumber.textContent = `Read: ${readCounter}`;
+    }
   }
   function addBookToLibrary(book) {
     book.id = cloneLibrary.length + 1;
     mainLibrary.push(book);
     cloneLibrary.push(book);
     setStorage();
-    document.getElementById("books-number").textContent = `Books: ${cloneLibrary.length}`;
+    booksNumber.textContent = `Books: ${cloneLibrary.length}`;
   }
 
 // COLOR PICKER
@@ -614,13 +620,14 @@ function refreshDOM(lib) {
       mainLibrary[id].read = "on";
       cloneLibrary[id].read = "on";
       readCounter++
-      document.getElementById("read-number").textContent = `Read: ${readCounter}`;
+      readNumber.textContent = `Read: ${readCounter}`;
     }
     else {
       mainLibrary[id].read = "off";
       cloneLibrary[id].read = "off";
       readCounter--
-      document.getElementById("read-number").textContent = `Read: ${readCounter}`;}
+      readNumber.textContent = `Read: ${readCounter}`;
+    }
   }
 
 //SELECTING BOOK / EVENT LISTENER
@@ -651,10 +658,14 @@ function refreshDOM(lib) {
           curTarg.remove();
           for (let i in mainLibrary) {
             if (mainLibrary[i].id == bookID) {
+              if (mainLibrary[i].read === "on") {
+                readCounter--;
+                readNumber.textContent = `Read: ${readCounter}`;
+              }
               mainLibrary.splice(i, 1);
               cloneLibrary.splice(i, 1);
               setStorage();
-              document.getElementById("books-number").textContent = `Books: ${cloneLibrary.length}`;
+              booksNumber.textContent = `Books: ${cloneLibrary.length}`;
             }
           }
         }
@@ -694,8 +705,8 @@ function addNewBook(e){
   let title = document.getElementById("new-form").elements[0];
   let authorFirst = document.getElementById("new-form").elements[1];
   let authorLast = document.getElementById("new-form").elements[2];
-  let pages = document.getElementById("new-form").elements[3];
-  let year = document.getElementById("new-form").elements[4];
+  let pages = parseInt(document.getElementById("new-form").elements[3]);
+  let year = parseInt(document.getElementById("new-form").elements[4]);
   let read = document.getElementById("new-form").elements[5];
   read.checked === false ? read.value = "off": read.value = "on";
   const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value, year.value, read.value);
@@ -810,7 +821,7 @@ function openFilterForm(e) {
   if (!max) max = Math.pow(10, 1000);
   function filter(prop) {
     for (let i in mainLibrary) {
-      if (mainLibrary[i][prop] <= min || mainLibrary[i][prop] >= max) {
+      if (parseInt(mainLibrary[i][prop]) <= min || parseInt(mainLibrary[i][prop]) >= max) {
         tempLibrary.push(mainLibrary[i]);
       }
     }  
@@ -820,10 +831,8 @@ function openFilterForm(e) {
       }
     }
   }
-  if (document.getElementById("filter-year").checked === true) {
-    filter("year");
-  }
-  else filter("pages");
+  if (document.getElementById("filter-year").checked === true) filter("year");
+  if (document.getElementById("filter-pages").checked === true) filter("pages");
   refreshDOM(mainLibrary);
 }
 
