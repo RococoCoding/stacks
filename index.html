@@ -3,7 +3,7 @@
     <title>Stacks</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   </head>
-<nav>
+<nav id="bookmark">
   <button id="new-button">New</button>
   <div id="search-form">
     <input form="search-form" type="text" id="search-box" class="hidden" placeholder="Title/Name"></input>
@@ -13,7 +13,8 @@
   <button id="filter-button">Filter</button>
   <button id="reset-button">Reset</button>
   <button id="delLib-button">Delete</button>
-  <div id="stats"></div>
+  <div id="books-number" class="stats"></div>
+  <div id="read-number" class="stats"></div>
   <div id="empty">e</div>
 </nav>
 <form id="new-form" class="new-form form hidden">
@@ -269,6 +270,14 @@
     width:8vw;
     margin: 0 1vw 3vw 1vw;
   }
+  .stats {
+    font-size: 2vw;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: bold;
+    color: #380c96;
+    margin-left: 1.5vw;
+  }
+  
 /* BOOKSHELF START */
   main {
     display: grid;
@@ -376,10 +385,9 @@
   //*to do later -- support for multiple authors? series?
   let mainLibrary = [];  //MAIN LIBRARY BLANK
   let tempLibrary = [];
-  // LOCAL STORAGE
-  // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY
-let cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
 
+ 
+ // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY
 if (localStorage.getItem("currentLibrary")) {
   let localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary")); 
     function setFromStorage() {
@@ -403,8 +411,20 @@ else {
   addBookToLibrary(storyOfStone);
 }
 
+let cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
+  
+// BOOKS TOTAL STAT INITIAL LOAD
+document.getElementById("books-number").textContent = `Books: ${cloneLibrary.length}`;
 
-function setStorage() { //UPDATING LOCAL STORAGE
+// BOOK READ STAT INITIAL LOAD
+let readCounter = 0; 
+for (let i in mainLibrary) {
+  if (mainLibrary[i].read === "on") readCounter++; 
+}
+document.getElementById("read-number").textContent = `Read: ${readCounter}`;
+
+//UPDATING LOCAL STORAGE
+function setStorage() { 
   localStorage.setItem("currentLibrary", JSON.stringify(cloneLibrary));
   localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary"));
 }
@@ -425,6 +445,7 @@ function setStorage() { //UPDATING LOCAL STORAGE
     mainLibrary.push(book);
     cloneLibrary.push(book);
     setStorage();
+    document.getElementById("books-number").textContent = `Books: ${cloneLibrary.length}`;
   }
 
 // COLOR PICKER
@@ -452,6 +473,7 @@ function setStorage() { //UPDATING LOCAL STORAGE
   function setBookColor(element, color) {
     element.style.backgroundColor = `${color}`;
   }
+
 //MAIN BOOKSHELF CREATION FUNCTION
   function render(library) {
     // IF NO BOOKS IN LIBRARY, RENDER EMPTY SHELF
@@ -539,19 +561,54 @@ function setStorage() { //UPDATING LOCAL STORAGE
     }
   }
   render(mainLibrary);
+
+//DELETE MAIN DOM
+function deleteMainDOM() {
+  let node = document.getElementById("main");
+  while (node.hasChildNodes()) {
+    node.removeChild(node.lastChild);
+  } 
+}
+
+//REFRESH DOM
+function refreshDOM(lib) {
+  deleteMainDOM();
+  if (document.getElementById("sort-ascending").checked === false) {
+    let reverseLibrary = [...lib].reverse();
+    render(reverseLibrary);
+    for (let i = 0; i < bookClass.length; i++) {
+    bookClass[i].addEventListener("click", selectBook);
+    } 
+  }
+  if (document.getElementById("sort-ascending").checked === true) {
+    render(lib);
+    for (let i = 0; i < bookClass.length; i++) {
+    bookClass[i].addEventListener("click", selectBook);
+    }
+  }
+}
+
 //READ STATUS SAVE TO LIBRARY
-  let checkboxes = document.querySelectorAll("input[name=read]") 
+  let checkboxes = document.querySelectorAll("input[name=read]"); 
   for (let i = 0; i < checkboxes.length; i++) {
     let id = `read${i}`;
     document.getElementById(`${id}`).addEventListener('change', saveToLibrary);
-  }    
-  function saveToLibrary(e) {
-     if (e.target.checked === true) {
-       let id = e.target.id;
-       id = parseInt(id.slice(4));
-       mainLibrary[id].read = "on";
-     }
   }
+  function saveToLibrary(e) {
+    let id = parseInt(e.target.id.slice(4));
+    if (e.target.checked === true) {
+      mainLibrary[id].read = "on";
+      cloneLibrary[id].read = "on";
+      readCounter++
+      document.getElementById("read-number").textContent = `Read: ${readCounter}`;
+    }
+    else {
+      mainLibrary[id].read = "off";
+      cloneLibrary[id].read = "off";
+      readCounter--
+      document.getElementById("read-number").textContent = `Read: ${readCounter}`;}
+  }
+
 //SELECTING BOOK / EVENT LISTENER
   let bookClass = document.getElementsByClassName("book");
   for (let i = 0; i < bookClass.length; i++) {
@@ -588,6 +645,7 @@ function setStorage() { //UPDATING LOCAL STORAGE
       }
     }
   }
+
 //*CLICK OUTSIDE FORM TO CLOSE*
 window.onclick = function(event) {
   let forms = document.getElementsByClassName("form");
@@ -603,7 +661,8 @@ window.onclick = function(event) {
     }
   }
 }
-//BOOKMARK BUTTONS
+
+//********BOOKMARK BUTTONS START*********
   //OPEN NEW BOOK FORM
 document.getElementById("new-button").addEventListener("click", openNewBookForm);
   function openNewBookForm() {
@@ -623,7 +682,7 @@ function addNewBook(e){
   let year = document.getElementById("new-form").elements[4];
   let read = document.getElementById("new-form").elements[5];
   read.checked === false ? read.value = "off": read.value = "on";
-  const newBook = new bookMaker(title.value = "Untitled", authorFirst.value = "Unknown", authorLast.value = "Unknown", pages.value = 0, year.value, read.value);
+  const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value = 0, year.value, read.value);
   addBookToLibrary(newBook);
   deleteMainDOM();
   render(mainLibrary);
@@ -643,7 +702,6 @@ function clearForm() {
 let searchForm = document.getElementById("search-form");
 searchForm.addEventListener("input", search);
 searchForm.addEventListener("submit", () => {event.preventDefault();});
-
 function search(e){
   let searchQuery = document.getElementById("search-box").value;
   for (let i in mainLibrary) {
@@ -663,7 +721,7 @@ function search(e){
     }
   }
 }
-
+  //button move
 function toggleSearch() {
   document.getElementById("search-box").classList.toggle("hidden");
   if (document.getElementById("search-button").textContent == "Search") {
@@ -674,37 +732,13 @@ function toggleSearch() {
     document.getElementById("search-box").value = null;
     search();
 }
+
 // SORT
 let sortForm = document.getElementById("sort-form");
 document.getElementById("sort-button").addEventListener("click", () => {
   sortForm.classList.toggle("hidden");
 });
-
-
-
-function deleteMainDOM() {
-  let node = document.getElementById("main");
-  while (node.hasChildNodes()) {
-    node.removeChild(node.lastChild);
-  } 
-}
 document.getElementById("sort-submit").addEventListener("click", sort);
-function refreshDOM(lib) {
-  deleteMainDOM();
-  if (document.getElementById("sort-ascending").checked === false) {
-    let reverseLibrary = [...lib].reverse();
-    render(reverseLibrary);
-    for (let i = 0; i < bookClass.length; i++) {
-    bookClass[i].addEventListener("click", selectBook);
-    } 
-  }
-  if (document.getElementById("sort-ascending").checked === true) {
-    render(lib);
-    for (let i = 0; i < bookClass.length; i++) {
-    bookClass[i].addEventListener("click", selectBook);
-    }
-  }
-}
 function sort() {
   function sortByProp(prop = "id") {
     return function(a, b) {
@@ -748,10 +782,10 @@ function sort() {
 
 
 //FILTER
+let filterForm = document.getElementById("filter-form");
 document.getElementById("filter-button").addEventListener("click", () => {
   document.getElementById("filter-form").classList.toggle("hidden");
 });
-let filterForm = document.getElementById("filter-form");
 document.getElementById("filter-submit").addEventListener("click", openFilterForm);
 function openFilterForm(e) {
   let min = document.getElementById("filter-start").value;
@@ -794,5 +828,5 @@ function deleteLibrary() {
 }
 
 // MOVE BOOK? FAVICON
-// BOOK STATS? # OF BOOKS, BOOKS READ
+// mobile :sad:
 </script>
