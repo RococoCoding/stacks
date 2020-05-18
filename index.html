@@ -799,7 +799,7 @@ function sort() {
 //FILTER
 let filterForm = document.getElementById("filter-form");
 document.getElementById("filter-button").addEventListener("click", () => {
-  document.getElementById("filter-form").classList.toggle("hidden");
+  filterForm.classList.toggle("hidden");
 });
 document.getElementById("filter-submit").addEventListener("click", openFilterForm);
 function openFilterForm(e) {
