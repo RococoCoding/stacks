@@ -444,14 +444,15 @@ function setStorage() {
 // LIBRARY CREATION
   const bookMakerConst = bookMaker;
   function bookMaker(title, authorFirst, authorLast, pages, year, read) {
-    this.title = title;
-    this.authorFirst = authorFirst;
-    this.authorLast = authorLast;
-    if (!pages) pages = 0;
-    this.pages = pages;
-    this.year = year;
-    this.read = read;
-    this.color = colorPicker();
+    // Short-circuiting property assignments.
+    // If no value is supplied, it assigns the OR value.
+    this.title       = title       || "Untitled";
+    this.authorFirst = authorFirst || "John";
+    this.authorLast  = authorLast  || "Doe";
+    this.pages       = pages       || 0;
+    this.year        = year        || 0;
+    this.read        = read        || "off";
+    this.color       = colorPicker();
   }
   function addBookToLibrary(book) {
     book.id = cloneLibrary.length + 1;
