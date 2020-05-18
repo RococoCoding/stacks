@@ -387,6 +387,10 @@
   let tempLibrary = [];
   let cloneLibrary = [];
 
+//UNCOMMENT TO RESET LOAD COUNT
+//localStorage.removeItem("loadCount") 
+
+
  // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY OR CREATION OF STOCK LIBRARY
  if (!localStorage.getItem("loadCount")) localStorage.setItem("loadCount", "0"); 
 let counter = parseInt(localStorage.getItem("loadCount")); 
@@ -419,7 +423,6 @@ else {
     localStorage.setItem("loadCount", `${counter}`);
   }
 }
-console.log(localStorage.getItem("loadCount"))
 
 cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
 // BOOKS TOTAL STAT INITIAL LOAD
@@ -444,13 +447,14 @@ function setStorage() {
     this.title = title;
     this.authorFirst = authorFirst;
     this.authorLast = authorLast;
+    if (!pages) pages = 0;
     this.pages = pages;
     this.year = year;
     this.read = read;
     this.color = colorPicker();
   }
   function addBookToLibrary(book) {
-    book.id = mainLibrary.length + 1;
+    book.id = cloneLibrary.length + 1;
     mainLibrary.push(book);
     cloneLibrary.push(book);
     setStorage();
@@ -645,7 +649,6 @@ function refreshDOM(lib) {
           let bookID = e.currentTarget.id.slice(4);
           curTarg.remove();
           for (let i in mainLibrary) {
-            console.log(mainLibrary[i].id)
             if (mainLibrary[i].id == bookID) {
               mainLibrary.splice(i, 1);
               cloneLibrary.splice(i, 1);
@@ -828,6 +831,9 @@ document.getElementById("reset-button").addEventListener("click", reset);
 function reset() {
   deleteMainDOM();
   render(cloneLibrary);
+  for (let i = 0; i < bookClass.length; i++) {
+    bookClass[i].addEventListener("click", selectBook);
+  }
 }
 
 //DELETE LIBRARY
