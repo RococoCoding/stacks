@@ -122,6 +122,7 @@
   <button form="filter-form" type="button" id="filter-submit">Filter</button>
 </form>
 <main id="main">
+ 
 </main>
 </html>
 <style>
@@ -317,6 +318,9 @@
     cursor: pointer;
     overflow:hidden;
   }
+  #force-empty-shelf {
+    color: rgba(0, 0, 0, 0);
+  }
   /* PICKED UP/"OPEN" BOOK */
   .book-onclick {
     position: fixed;
@@ -497,23 +501,25 @@ function setStorage() {
 //MAIN BOOKSHELF CREATION FUNCTION
   function render(library) {
     // IF NO BOOKS IN LIBRARY, RENDER EMPTY SHELF
-    if (library.length === 0) {
-      main.appendChild(document.createElement("section"));
-      main.lastChild.setAttribute("id", "currentShelf");
-      main.lastChild.classList.add("shelf");
-      document.getElementById("currentShelf").textContent = "e";
-      document.getElementById("currentShelf").classList.add("empty");
-    }
-    else { 
+    // if (library.length === 0) {
+    //   main.appendChild(document.createElement("section"));
+    //   main.lastChild.setAttribute("id", "currentShelf");
+    //   main.lastChild.classList.add("shelf");
+    //   document.getElementById("currentShelf").textContent = "e";
+    //   document.getElementById("currentShelf").classList.add("empty");
+    // }
+    // else { 
       for (let i in library) {
           if (i % 15 === 0) {
-            // RENDER FIRST SHELF
             if (document.getElementById("currentShelf")) {
               currentShelf.removeAttribute("id", "currentShelf");
             }
             main.appendChild(document.createElement("section"));
             main.lastChild.setAttribute("id", "currentShelf");
             main.lastChild.classList.add("shelf");
+            let currentShelf = document.getElementById("currentShelf");
+            currentShelf.appendChild(document.createElement("span"));
+            currentShelf.lastChild.setAttribute("id", "force-empty-shelf");
           }    
           //RENDER BOOKS
           function bookMakerDOM(parent, newNode) {
@@ -578,7 +584,7 @@ function setStorage() {
           }
           bookMakerDOM(currentShelf, "div");
       }
-    }
+    // }
   }
   render(mainLibrary);
 
@@ -856,6 +862,9 @@ function deleteLibrary() {
     mainLibrary = [];
     cloneLibrary = [];
     tempLibrary = [];
+    readCounter = 0;
+    readNumber.textContent = `Read: ${readCounter}`;
+    booksNumber.textContent = `Books: ${cloneLibrary.length}`;
     render(mainLibrary);
   }
 }
