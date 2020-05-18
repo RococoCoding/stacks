@@ -388,19 +388,19 @@
   let cloneLibrary = [];
 
  // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY OR CREATION OF STOCK LIBRARY
+ if (!localStorage.getItem("loadCount")) localStorage.setItem("loadCount", "0"); 
+let counter = parseInt(localStorage.getItem("loadCount")); 
 if (localStorage.getItem("currentLibrary")) {
   let localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary")); 
-  let counter = 0;
-  counter = parseInt(localStorage.getItem("loadCount")) + 1;
     function setFromStorage() {
       mainLibrary = localStorageLibrary;
-      localStorage.setItem("loadCount", `${counter}`);
+      counter++;
+      localStorage.setItem("loadCount", `${counter}`); 
     }
   setFromStorage();  
 }
 else {
-  localStorage.setItem("loadCount", "0");
-  if (parseInt(localStorage.getItem("loadCount")) < 1) {
+  if (counter < 1) {
     const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "off");
     const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "off");
     const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "off");
@@ -414,9 +414,13 @@ else {
     addBookToLibrary(cryptonomicon);
     addBookToLibrary(graveyardBook);
     addBookToLibrary(storyOfStone);
+    
+    counter++;
+    localStorage.setItem("loadCount", `${counter}`);
   }
 }
 console.log(localStorage.getItem("loadCount"))
+
 cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
 // BOOKS TOTAL STAT INITIAL LOAD
 document.getElementById("books-number").textContent = `Books: ${cloneLibrary.length}`;
