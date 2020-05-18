@@ -829,15 +829,18 @@ function reset() {
 //DELETE LIBRARY
 document.getElementById("delLib-button").addEventListener("click", deleteLibrary);
 function deleteLibrary() {
-  localStorage.removeItem("currentLibrary");
-  localStorageLibrary = [];
-  deleteMainDOM();
-  mainLibrary = [];
-  cloneLibrary = [];
-  tempLibrary = [];
-  render(mainLibrary);
+  if (confirm('Are you sure you want to delete this book from the database?')) {
+    localStorage.removeItem("currentLibrary");
+    localStorageLibrary = [];
+    deleteMainDOM();
+    mainLibrary = [];
+    cloneLibrary = [];
+    tempLibrary = [];
+    render(mainLibrary);
+  }
 }
 
 // MOVE BOOK? FAVICON
+// CLOSE BUTTON/CLICK OUTSIDE?
 // mobile :sad:
 </script>
