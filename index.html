@@ -383,36 +383,41 @@
 </style>
 <script>
   //*to do later -- support for multiple authors? series?
-  let mainLibrary = [];  //MAIN LIBRARY BLANK
+  let mainLibrary = []; 
   let tempLibrary = [];
+  let cloneLibrary = [];
 
- 
- // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY
+ // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY OR CREATION OF STOCK LIBRARY
 if (localStorage.getItem("currentLibrary")) {
   let localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary")); 
+  let counter = 0;
+  counter = parseInt(localStorage.getItem("loadCount")) + 1;
     function setFromStorage() {
       mainLibrary = localStorageLibrary;
+      localStorage.setItem("loadCount", `${counter}`);
     }
   setFromStorage();  
 }
 else {
-  const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "off");
-  const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "on");
-  const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "on");
-  const theHobbit = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "on");
-  const cryptonomicon = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "on");
-  const graveyardBook = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "on");
+  localStorage.setItem("loadCount", "0");
+  if (parseInt(localStorage.getItem("loadCount")) < 1) {
+    const anubisGates = new bookMaker("The Anubis Gates", "Tim", "Powers", 387, 1997, "off");
+    const colorOfMagic = new bookMaker("The Color of Magic", "Terry", "Pratchett", 228, 2005, "off");
+    const storyOfStone = new bookMaker("The Story of the Stone", "Barry", "Hughart", 236, 1989, "off");
+    const theHobbit = new bookMaker("The Hobbit", "JRR", "Tolkien", 310, 1937, "off");
+    const cryptonomicon = new bookMaker("Cryptonomicon", "Neal", "Stephenson", 1129, 2002, "off");
+    const graveyardBook = new bookMaker("The Graveyard Book", "Neil", "Gaiman", 307, 2008, "off");
 
-  addBookToLibrary(anubisGates);
-  addBookToLibrary(colorOfMagic);
-  addBookToLibrary(theHobbit);
-  addBookToLibrary(cryptonomicon);
-  addBookToLibrary(graveyardBook);
-  addBookToLibrary(storyOfStone);
+    addBookToLibrary(anubisGates);
+    addBookToLibrary(colorOfMagic);
+    addBookToLibrary(theHobbit);
+    addBookToLibrary(cryptonomicon);
+    addBookToLibrary(graveyardBook);
+    addBookToLibrary(storyOfStone);
+  }
 }
-
-let cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
-  
+console.log(localStorage.getItem("loadCount"))
+cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
 // BOOKS TOTAL STAT INITIAL LOAD
 document.getElementById("books-number").textContent = `Books: ${cloneLibrary.length}`;
 
@@ -821,10 +826,12 @@ function reset() {
 document.getElementById("delLib-button").addEventListener("click", deleteLibrary);
 function deleteLibrary() {
   localStorage.removeItem("currentLibrary");
+  localStorageLibrary = [];
   deleteMainDOM();
   mainLibrary = [];
   cloneLibrary = [];
   tempLibrary = [];
+  render(mainLibrary);
 }
 
 // MOVE BOOK? FAVICON
