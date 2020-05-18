@@ -500,83 +500,86 @@ function setStorage() {
 
 //MAIN BOOKSHELF CREATION FUNCTION
   function render(library) {
-      for (let i in library) {
-        // SHELF CREATION - couldn't figure out how to get it to auto drop to next shelf with grid, so fixed width books, 15 every shelf
-          if (i % 15 === 0) {
-            if (document.getElementById("currentShelf")) {
-              currentShelf.removeAttribute("id", "currentShelf");
+    function createShelf(){
+      main.appendChild(document.createElement("section"));
+      main.lastChild.setAttribute("id", "currentShelf");
+      main.lastChild.classList.add("shelf");
+      let currentShelf = document.getElementById("currentShelf");
+      currentShelf.appendChild(document.createElement("span")); //invisible item to force shelf to appear even when section is empty
+      currentShelf.lastChild.setAttribute("id", "force-empty-shelf");
+    }
+    if (library.length === 0) createShelf();
+    for (let i in library) {
+      // SHELF CREATION - couldn't figure out how to get it to auto drop to next shelf with grid, so fixed width books, 15 every shelf
+      if (i % 15 === 0) {
+        if (document.getElementById("currentShelf")) {
+          currentShelf.removeAttribute("id", "currentShelf");
+        }
+        createShelf();
+      }    
+      //RENDER BOOKS
+      function bookMakerDOM(parent, newNode) {
+        function createParentDiv(parent, newNode) {
+          createAppend(parent, "div");
+          classAdd(parent.lastChild, "book");
+          setID(parent.lastChild, `book${library[i].id}`);
+          setText(parent.lastChild, `${library[i].title}`);
+          setBookColor(parent.lastChild, `${library[i].color}`);
+        }
+        createParentDiv(parent, newNode);
+        function addAuthorName(parent, newNode) {
+          createAppend(parent, newNode);
+          setText(parent.lastChild, `${library[i].authorFirst} ${library[i].authorLast}`);
+          classAdd(parent.lastChild, "hidden");
+        }
+        addAuthorName(parent.lastChild, "p");
+        function addYear(parent, newNode) {
+          createAppend(parent, newNode);
+          setText(parent.lastChild, `Year: ${library[i].year}`);
+          classAdd(parent.lastChild, "hidden", "year");
+        }
+        addYear(parent.lastChild, "p");
+        function addPages(parent, newNode) {
+          createAppend(parent, newNode);
+          setText(parent.lastChild, `Pages: ${library[i].pages}`);
+          classAdd(parent.lastChild, "hidden", "pages");
+        }
+        addPages(parent.lastChild, "p");
+        function createReadBox(parent, newNode) {
+          createAppend(parent, newNode);
+          classAdd(parent.lastChild, "hidden", "box-wrapper");
+          function createInput(parent, newNode) {
+            createAppend(parent, newNode);
+            parent.lastChild.setAttribute("type", "checkbox");
+            parent.lastChild.name = "read";
+            parent.lastChild.id = `read${i}`;
+            if (library[i].read === "on") {
+              parent.lastChild.checked = true;
             }
-            main.appendChild(document.createElement("section"));
-            main.lastChild.setAttribute("id", "currentShelf");
-            main.lastChild.classList.add("shelf");
-            let currentShelf = document.getElementById("currentShelf");
-            currentShelf.appendChild(document.createElement("span")); //invisible item to force shelf to appear even when section is empty
-            currentShelf.lastChild.setAttribute("id", "force-empty-shelf");
-          }    
-          //RENDER BOOKS
-          function bookMakerDOM(parent, newNode) {
-            function createParentDiv(parent, newNode) {
-              createAppend(parent, "div");
-              classAdd(parent.lastChild, "book");
-              setID(parent.lastChild, `book${library[i].id}`);
-              setText(parent.lastChild, `${library[i].title}`);
-              setBookColor(parent.lastChild, `${library[i].color}`);
-            }
-            createParentDiv(parent, newNode);
-            function addAuthorName(parent, newNode) {
-              createAppend(parent, newNode);
-              setText(parent.lastChild, `${library[i].authorFirst} ${library[i].authorLast}`);
-              classAdd(parent.lastChild, "hidden");
-            }
-            addAuthorName(parent.lastChild, "p");
-            function addYear(parent, newNode) {
-              createAppend(parent, newNode);
-              setText(parent.lastChild, `Year: ${library[i].year}`);
-              classAdd(parent.lastChild, "hidden", "year");
-            }
-            addYear(parent.lastChild, "p");
-            function addPages(parent, newNode) {
-              createAppend(parent, newNode);
-              setText(parent.lastChild, `Pages: ${library[i].pages}`);
-              classAdd(parent.lastChild, "hidden", "pages");
-            }
-            addPages(parent.lastChild, "p");
-            function createReadBox(parent, newNode) {
-              createAppend(parent, newNode);
-              classAdd(parent.lastChild, "hidden", "box-wrapper");
-              function createInput(parent, newNode) {
-                createAppend(parent, newNode);
-                parent.lastChild.setAttribute("type", "checkbox");
-                parent.lastChild.name = "read";
-                parent.lastChild.id = `read${i}`;
-                if (library[i].read === "on") {
-                  parent.lastChild.checked = true;
-                }
-                else parent.lastChild.checked = false;
-                createAppend(parent, "label");
-                parent.lastChild.setAttribute("for", `read${i}`);
-                setText(parent.lastChild, "Read");
-              }
-              createInput(parent.lastChild, "input");
-            }
-            createReadBox(parent.lastChild, "div");
-            function deleteButton(parent, newNode) {
-              createAppend(parent, newNode);
-              setText(parent.lastChild, "Delete");
-              parent.lastChild.id = "delete-button";
-              classAdd(parent.lastChild, "hidden", "delete-button");
-            }
-            deleteButton(parent.lastChild, "button");
-            // function closeButton(parent, newNode) {
-            //     createAppend(parent, newNode);
-            //     setText(parent.lastChild, "Close");
-            //     classAdd(parent.lastChild, "hidden", "close-button");
-            // }
-            // closeButton(parent.lastChild, "button");
+            else parent.lastChild.checked = false;
+            createAppend(parent, "label");
+            parent.lastChild.setAttribute("for", `read${i}`);
+            setText(parent.lastChild, "Read");
           }
-          bookMakerDOM(currentShelf, "div");
+          createInput(parent.lastChild, "input");
+        }
+        createReadBox(parent.lastChild, "div");
+        function deleteButton(parent, newNode) {
+          createAppend(parent, newNode);
+          setText(parent.lastChild, "Delete");
+          parent.lastChild.id = "delete-button";
+          classAdd(parent.lastChild, "hidden", "delete-button");
+        }
+        deleteButton(parent.lastChild, "button");
+        // function closeButton(parent, newNode) {
+        //     createAppend(parent, newNode);
+        //     setText(parent.lastChild, "Close");
+        //     classAdd(parent.lastChild, "hidden", "close-button");
+        // }
+        // closeButton(parent.lastChild, "button");
       }
-    // }
+      bookMakerDOM(currentShelf, "div");
+    }
   }
   render(mainLibrary);
 
