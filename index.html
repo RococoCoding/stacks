@@ -715,9 +715,9 @@ function addNewBook(e){
   let title = document.getElementById("new-form").elements[0];
   let authorFirst = document.getElementById("new-form").elements[1];
   let authorLast = document.getElementById("new-form").elements[2];
-  let pages = parseInt(document.getElementById("new-form").elements[3]);
-  let year = parseInt(document.getElementById("new-form").elements[4]);
-  let read = document.getElementById("new-form").elements[5];
+  let pages = document.getElementById("new-form").elements[3];
+  let year = document.getElementById("new-form").elements[4];
+  let read = document.getElementById("new-form").elements[5].value;
   read.checked === false ? read.value = "off": read.value = "on";
   const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value, year.value, read.value);
   addBookToLibrary(newBook);
