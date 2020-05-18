@@ -440,7 +440,7 @@ function setStorage() {
 
 // LIBRARY CREATION
   const bookMakerConst = bookMaker;
-  function bookMaker(title, authorFirst, authorLast, pages = 0, year = 0, read) {
+  function bookMaker(title, authorFirst, authorLast, pages, year, read) {
     this.title = title;
     this.authorFirst = authorFirst;
     this.authorLast = authorLast;
@@ -694,7 +694,7 @@ function addNewBook(e){
   let year = document.getElementById("new-form").elements[4];
   let read = document.getElementById("new-form").elements[5];
   read.checked === false ? read.value = "off": read.value = "on";
-  const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value = 0, year.value, read.value);
+  const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value, year.value, read.value);
   addBookToLibrary(newBook);
   deleteMainDOM();
   render(mainLibrary);
