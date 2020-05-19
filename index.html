@@ -493,13 +493,18 @@
     width:12vw;
     margin: 0 1vw 3vw 1vw;
   }
+  
+  input[type="checkbox"] {
+    height: 4vw;
+    width: 4vw;
+  }
 }
 </style>
 <script>
 let mainLibrary = []; 
 
 //UNCOMMENT TO RESET LOAD COUNT
-localStorage.removeItem("loadCount"); 
+//localStorage.removeItem("loadCount"); 
 
 let booksNumber = document.getElementById("books-number");
 let readCounter = 0; 
