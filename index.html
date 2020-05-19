@@ -496,9 +496,7 @@
 }
 </style>
 <script>
-//*to do later -- support for multiple authors? series?
 let mainLibrary = []; 
-let cloneLibrary = [];
 
 //UNCOMMENT TO RESET LOAD COUNT
 localStorage.removeItem("loadCount"); 
@@ -506,6 +504,8 @@ localStorage.removeItem("loadCount");
 let booksNumber = document.getElementById("books-number");
 let readCounter = 0; 
 let readNumber = document.getElementById("read-number");
+let bookClass = document.getElementsByClassName("book");
+let checkboxes = document.querySelectorAll("input[name=read]"); 
 
  // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY OR CREATION OF STOCK LIBRARY
  if (!localStorage.getItem("loadCount")) localStorage.setItem("loadCount", "0"); 
@@ -540,10 +540,7 @@ else {
   }
 }
 
-
-cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
-
-booksNumber.textContent = `Books: ${cloneLibrary.length}`;
+booksNumber.textContent = `Books: ${mainLibrary.length}`;
 for (let i in mainLibrary) {
   if (mainLibrary[i].read === "on") readCounter++; 
 }
@@ -551,7 +548,7 @@ readNumber.textContent = `Read: ${readCounter}`;
 
 //UPDATING LOCAL STORAGE
 function setStorage() { 
-  localStorage.setItem("currentLibrary", JSON.stringify(cloneLibrary));
+  localStorage.setItem("currentLibrary", JSON.stringify(mainLibrary));
   localStorageLibrary = JSON.parse(localStorage.getItem("currentLibrary"));
 }
 
@@ -573,11 +570,9 @@ function setStorage() {
     }
   }
   function addBookToLibrary(book) {
-    book.id = cloneLibrary.length + 1;
     mainLibrary.push(book);
-    cloneLibrary.push(book);
     setStorage();
-    booksNumber.textContent = `Books: ${cloneLibrary.length}`;
+    booksNumber.textContent = `Books: ${mainLibrary.length}`;
   }
 
 // COLOR PICKER
@@ -638,9 +633,11 @@ function setStorage() {
       //RENDER BOOKS
       function bookMakerDOM(parent, newNode) {
         function createParentDiv(parent, newNode) {
+          library[i].id = parseInt(i);
           createAppend(parent, "div");
           classAdd(parent.lastChild, "book");
-          setID(parent.lastChild, `book${library[i].id}`);
+          setID(parent.lastChild, `book${i}`);
+          document.getElementById(`book${i}`).addEventListener("click", selectBook);
           setText(parent.lastChild, `${library[i].title}`);
           setBookColor(parent.lastChild, `${library[i].color}`);
         }
@@ -670,13 +667,13 @@ function setStorage() {
             createAppend(parent, newNode);
             parent.lastChild.setAttribute("type", "checkbox");
             parent.lastChild.name = "read";
-            parent.lastChild.id = `read${i}`;
+            parent.lastChild.id = `read${parseInt(i)}`;
             if (library[i].read === "on") {
               parent.lastChild.checked = true;
             }
-            else parent.lastChild.checked = false;
+            parent.lastChild.addEventListener("change", saveToLibrary);
             createAppend(parent, "label");
-            parent.lastChild.setAttribute("for", `read${i}`);
+            parent.lastChild.setAttribute("for", `read${parseInt(i)}`);
             setText(parent.lastChild, "Read");
           }
           createInput(parent.lastChild, "input");
@@ -715,35 +712,22 @@ function refreshDOM(lib) {
   if (document.getElementById("sort-ascending").checked === false) {
     let reverseLibrary = [...lib].reverse();
     render(reverseLibrary);
-    for (let i = 0; i < bookClass.length; i++) {
-    bookClass[i].addEventListener("click", selectBook);
-    } 
   }
   if (document.getElementById("sort-ascending").checked === true) {
     render(lib);
-    for (let i = 0; i < bookClass.length; i++) {
-    bookClass[i].addEventListener("click", selectBook);
-    }
   }
 }
 
 //READ STATUS SAVE TO LIBRARY
-  let checkboxes = document.querySelectorAll("input[name=read]"); 
-  for (let i = 0; i < checkboxes.length; i++) {
-    let id = `read${i}`;
-    document.getElementById(`${id}`).addEventListener('change', saveToLibrary);
-  }
   function saveToLibrary(e) {
     let id = parseInt(e.target.id.slice(4));
     if (e.target.checked === true) {
       mainLibrary[id].read = "on";
-      cloneLibrary[id].read = "on";
       readCounter++
       readNumber.textContent = `Read: ${readCounter}`;
     }
     if (e.target.checked === false) {
       mainLibrary[id].read = "off";
-      cloneLibrary[id].read = "off";
       readCounter--
       readNumber.textContent = `Read: ${readCounter}`;
     }
@@ -751,19 +735,20 @@ function refreshDOM(lib) {
   }
 
 //SELECTING BOOK / EVENT LISTENER
-  let bookClass = document.getElementsByClassName("book");
-  for (let i = 0; i < bookClass.length; i++) {
-    bookClass[i].addEventListener("click", selectBook);
-  }
   function selectBook(e) {
     let curTarg = e.currentTarget;
     let forms = document.getElementsByClassName("form");
+    let children = curTarg.childNodes;
     if (e.target.type !== "checkbox") {
       if (e.target.id !== "delete-button") {
         for (let i = 0; i < forms.length; i++) {
           if (!forms[i].classList.contains("hidden")) return; //don't open book if a form is open
         }
-        let children = curTarg.childNodes;
+        for (let i = 0; i < bookClass.length; i++) {
+          if (bookClass[i].classList.contains("book-onclick")) {
+            if (e.target === bookClass[i] || bookClass[i].contains(e.target)) return; // don't close book if clicking on already open book
+          }
+        }
         curTarg.classList.toggle("book-onclick"); // opens book
         for (let i in children) {
           if (children[i].classList) {
@@ -776,15 +761,16 @@ function refreshDOM(lib) {
           let bookID = e.currentTarget.id.slice(4);
           curTarg.remove();
           for (let i in mainLibrary) {
+            console.log(mainLibrary[i])
             if (mainLibrary[i].id == bookID) {
+              console.log(mainLibrary[i])
               if (mainLibrary[i].read === "on") {
                 readCounter--;
                 readNumber.textContent = `Read: ${readCounter}`;
               }
               mainLibrary.splice(i, 1);
-              cloneLibrary.splice(i, 1);
               setStorage();
-              booksNumber.textContent = `Books: ${cloneLibrary.length}`;
+              booksNumber.textContent = `Books: ${mainLibrary.length}`;
             }
           }
         }
@@ -795,7 +781,6 @@ function refreshDOM(lib) {
 //*CLICK OUTSIDE FORM TO CLOSE*
 window.onclick = function(e) {
   let forms = document.getElementsByClassName("form");
-  let books = document.getElementsByClassName("book");
   for (let i = 0; i < forms.length; i++) {
     if (!forms[i].classList.contains("hidden")) {
       let formSplit = forms[i].id.split("-"); // "${operation}-form" to "${operation}-button" to exclude associated button
@@ -806,11 +791,11 @@ window.onclick = function(e) {
       }
     }
   }
-  for (let i = 0; i < books.length; i++) {
-    if (books[i].classList.contains("book-onclick")) {
-      if (e.target !== books[i] && !books[i].contains(e.target)) {
-        books[i].classList.toggle("book-onclick");
-        let children = books[i].childNodes;
+  for (let i = 0; i < bookClass.length; i++) {
+    if (bookClass[i].classList.contains("book-onclick")) {
+      if (e.target !== bookClass[i] && !bookClass[i].contains(e.target)) { //if click is not on open book or its child nodes
+        bookClass[i].classList.toggle("book-onclick");
+        let children = bookClass[i].childNodes;
         for (let i in children) {
           if (children[i].classList) {
             children[i].classList.toggle("hidden"); 
@@ -841,7 +826,6 @@ function addNewBook(e){
   let year = document.getElementById("new-form").elements[4];
   let read = document.getElementById("new-form").elements[5];
   if (read.checked === true) {
-    readNumber.textContent = `Read: ${readCounter}`;
     read.value = "on";
   }
   else read.value = "off";
@@ -849,9 +833,6 @@ function addNewBook(e){
   addBookToLibrary(newBook);
   deleteMainDOM();
   render(mainLibrary);
-  for (let i = 0; i < bookClass.length; i++) {
-    bookClass[i].addEventListener("click", selectBook);
-  }
   addNewForm.classList.toggle("hidden");
   function delayFunction() {
     setTimeout(function() {addNewForm.classList.toggle("hidden");}, 50);
@@ -961,22 +942,18 @@ function openFilterForm(e) {
   let max = document.getElementById("filter-end").value;
   if (!max) max = Math.pow(10, 1000);
   function filter(prop) {
-    let tempLibrary = [];
-    for (let i in cloneLibrary) {
-      if (parseInt(cloneLibrary[i][prop]) <= min || parseInt(cloneLibrary[i][prop]) >= max) {
-        tempLibrary.push(cloneLibrary[i]);
+    // let tempLibrary = [];
+    for (let i in mainLibrary) {
+      let bookID = `book${mainLibrary[i].id}`;
+      if (parseInt(mainLibrary[i][prop]) <= min || parseInt(mainLibrary[i][prop]) >= max) {
+        document.getElementById(`${bookID}`).classList.add("hidden");
       }
+      else
+        document.getElementById(`${bookID}`).classList.remove("hidden");
     }  
-    mainLibrary = [...cloneLibrary];
-    for (let i in tempLibrary) {
-      for (let j = mainLibrary.length -1; j >= 0; j--) {
-        if (tempLibrary[i].id === mainLibrary[j].id) mainLibrary.splice(j, 1);
-      }
-    }
   }
   if (document.getElementById("filter-year").checked === true) filter("year");
   if (document.getElementById("filter-pages").checked === true) filter("pages");
-  refreshDOM(mainLibrary);
   document.getElementById("filter-button").style.backgroundColor = "#75ff78";
 }
 
@@ -984,7 +961,7 @@ function openFilterForm(e) {
 document.getElementById("reset-button").addEventListener("click", reset);
 function reset() {
   deleteMainDOM();
-  mainLibrary = [...cloneLibrary];
+  mainLibrary.sort((a, b) => a.id - b.id);  
   render(mainLibrary);
   document.getElementById("filter-button").style.backgroundColor = "rgba(0,0,0,0)";
   for (let i = 0; i < bookClass.length; i++) {
@@ -1000,10 +977,9 @@ function deleteLibrary() {
     localStorageLibrary = [];
     deleteMainDOM();
     mainLibrary = [];
-    cloneLibrary = [];
     readCounter = 0;
     readNumber.textContent = `Read: ${readCounter}`;
-    booksNumber.textContent = `Books: ${cloneLibrary.length}`;
+    booksNumber.textContent = `Books: ${mainLibrary.length}`;
     render(mainLibrary);
   }
 }
