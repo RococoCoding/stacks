@@ -138,7 +138,6 @@
     background-image: url("https://github.com/sinsofangels/stacks/blob/master/kissclipart-bookmark-clipart-bookmark-f9be247b5462a543.png?raw=true");
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    background-color: rgba(0, 0, 0, 0);
     display: grid;
     grid-template-rows: repeat(7, auto) 9vw 5vw;
   }
@@ -152,7 +151,7 @@
     height: 3.5vw;
     width: 8vw;
     color: #380c96;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0,0,0,0);
     border-style: outset;
     border-color: purple;
     border-radius: 4px;
@@ -278,7 +277,7 @@
     color: #380c96;
     margin-left: 1.5vw;
   }
-  
+
 /* BOOKSHELF START */
   main {
     display: grid;
@@ -391,7 +390,7 @@
   let cloneLibrary = [];
 
 //UNCOMMENT TO RESET LOAD COUNT
-// localStorage.removeItem("loadCount") 
+localStorage.removeItem("loadCount") 
 
 
 // BOOKS TOTAL STAT INITIAL LOAD
@@ -657,6 +656,7 @@ function refreshDOM(lib) {
           curTarg.remove();
           for (let i in mainLibrary) {
             if (mainLibrary[i].id == bookID) {
+              console.log(i)
               if (mainLibrary[i].read === "on") {
                 readCounter--;
                 readNumber.textContent = `Read: ${readCounter}`;
@@ -852,13 +852,16 @@ function openFilterForm(e) {
   if (document.getElementById("filter-year").checked === true) filter("year");
   if (document.getElementById("filter-pages").checked === true) filter("pages");
   refreshDOM(mainLibrary);
+  document.getElementById("filter-button").style.backgroundColor = "#75ff78";
 }
 
 //RESET BUTTON 
 document.getElementById("reset-button").addEventListener("click", reset);
 function reset() {
   deleteMainDOM();
-  render(cloneLibrary);
+  mainLibrary = [...cloneLibrary];
+  render(mainLibrary);
+  document.getElementById("filter-button").style.backgroundColor = "rgba(0,0,0,0)";
   for (let i = 0; i < bookClass.length; i++) {
     bookClass[i].addEventListener("click", selectBook);
   }
