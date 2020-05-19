@@ -322,24 +322,6 @@
     color: rgba(0, 0, 0, 0);
   }
   /* PICKED UP/"OPEN" BOOK */
-  .book-onclick {
-    position: fixed;
-    height: max-content;
-    max-height: max-content;
-    width: 25vw;
-    word-wrap: break-word;
-    left: 40vw;
-    top: 10vw;
-    z-index: 1;
-    writing-mode: horizontal-tb;
-    text-orientation: upright;
-    font-size: 3vw;
-    text-align: center;
-    line-height: 3vw;
-    visibility: visible;
-    border-left-style: solid;
-    cursor: default;
-  }
   .year {
     line-height: 0px;
     font-size: 2.2vw;
@@ -384,46 +366,123 @@
     visibility: hidden;
     position: fixed;
   }
+
+  /* MEDIA QUERY */
 @media screen and (max-width: 415px) {
   nav {
     background-image: none;
     background-color: #cea1e3;
     width: 100vw;
-    height: 7vw;
+    height: 10vw;
     display: flex;
   }
-  nav > button {
-    margin-top: 1.2vw;
-    height: 4.5vw;
-    width: 9vw;
+  button {
+    margin-top: 1.8vw;
+    height: 6vw;
+    width: min-content;
+    font-size: 2.8vw;
   }
   #new-button {
-    margin-top: 1.2vw;
+    margin-top: 1.8vw;
   }
   #search-button {
-    margin-top: 1.2vw;
-    height: 4.5vw;
-    width: 9vw;
+    margin-top: 1.8vw;
+    height: 6vw;
+    width: min-content;
+    font-size: 2.8vw;
+    background-color: #cea1e3;
   }
+  .delete-button {
+    width: min-content;
+  }
+  input[type="text"] {
+    margin-top: 1.8vw;
+    height: 6vw;
+    width: 17vw;
+    font-size: 3.8vw;
+  }
+
   #empty {
     position: fixed;
   }
+  .stats {
+    font-size: 2.3vw;
+    margin-top: 1.3vw;
+  }
   main {
-    padding-top: 7vw;
+    padding-top: 10vw;
     grid-template-columns: 0 100vw 0;
   }
   .shelf {
     width: 100vw;
-    grid-auto-rows: 35vw;
+    grid-auto-rows: 47vw;
   }
   .book {
-    width: 5vw;
-    max-height: 27vw;
-    font-size: 2.3vw;
+    width: 8.4vw;
+    max-height: 37vw;
+    font-size: 3vw;
+    font-weight: bold;
+    line-height: 3.7vw;
   }
-  .stats {
-    font-size: 2vw;
-    margin-top: .8vw;
+  .book-onclick {
+    position: fixed;
+    height: max-content;
+    max-height: max-content;
+    width: 50vw;
+    word-wrap: break-word;
+    left: 20vw;
+    top: 20vw;
+    z-index: 1;
+    writing-mode: horizontal-tb;
+    text-orientation: upright;
+    font-size: 5vw;
+    text-align: center;
+    line-height: 5vw;
+    visibility: visible;
+    border-left-style: solid;
+    cursor: default;
+  }
+  .year {
+    font-size: 3vw;
+  }
+  .pages {
+    font-size: 3vw;
+  }
+  form {
+    height: max-content;
+    width: 60vw;
+    margin-left: 20vw;
+    margin-top: 15vw;
+    font-size: 4vw;
+  }
+  #new-form > input {
+    width: 40vw;
+    height: 5vw;
+    margin: 1vw;
+  }
+  #name-input-first {
+    width: 18.5vw;
+    height: 5vw;
+  }
+  #name-input-last {
+    width: 18.5vw;
+    height: 5vw;
+  }
+  #new-read {
+    height: 4vw;
+    width: 4vw;
+  }
+  
+  #filter-form {
+    width: 40vw;
+    height: max-content;
+  }
+  #filter-form > div {
+    display:inline-flex;
+  }
+ .filter-number {
+    width:8vw;
+    margin: 0 1vw 3vw 1vw;
   }
 }
 </style>
@@ -560,7 +619,7 @@ function setStorage() {
         } 
       }
       if (window.screen.availWidth < 415) {
-        if (i % 15 === 0) {
+        if (i % 10 === 0) {
           if (document.getElementById("currentShelf")) {
             currentShelf.removeAttribute("id", "currentShelf");
           }
