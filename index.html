@@ -385,25 +385,16 @@
   }
 </style>
 <script>
-  //*to do later -- support for multiple authors? series?
-  let mainLibrary = []; 
-  let cloneLibrary = [];
+//*to do later -- support for multiple authors? series?
+let mainLibrary = []; 
+let cloneLibrary = [];
 
 //UNCOMMENT TO RESET LOAD COUNT
-localStorage.removeItem("loadCount") 
+localStorage.removeItem("loadCount"); 
 
-
-// BOOKS TOTAL STAT INITIAL LOAD
 let booksNumber = document.getElementById("books-number");
-booksNumber.textContent = `Books: ${cloneLibrary.length}`;
-
-// BOOK READ STAT INITIAL LOAD
 let readCounter = 0; 
 let readNumber = document.getElementById("read-number");
-for (let i in mainLibrary) {
-  if (mainLibrary[i].read === "on") readCounter++; 
-}
-readNumber.textContent = `Read: ${readCounter}`;
 
  // SETTING MAIN LIBRARY TO LOCAL STORAGE LIBRARY OR CREATION OF STOCK LIBRARY
  if (!localStorage.getItem("loadCount")) localStorage.setItem("loadCount", "0"); 
@@ -438,7 +429,15 @@ else {
   }
 }
 
+
 cloneLibrary = [...mainLibrary]; //SET CLONE LIBRARY TO COPY OF MAIN LIBRARY AT THIS POINT;
+
+booksNumber.textContent = `Books: ${cloneLibrary.length}`;
+for (let i in mainLibrary) {
+  if (mainLibrary[i].read === "on") readCounter++; 
+}
+readNumber.textContent = `Read: ${readCounter}`;
+
 //UPDATING LOCAL STORAGE
 function setStorage() { 
   localStorage.setItem("currentLibrary", JSON.stringify(cloneLibrary));
@@ -621,12 +620,13 @@ function refreshDOM(lib) {
       readCounter++
       readNumber.textContent = `Read: ${readCounter}`;
     }
-    else {
+    if (e.target.checked === false) {
       mainLibrary[id].read = "off";
       cloneLibrary[id].read = "off";
       readCounter--
       readNumber.textContent = `Read: ${readCounter}`;
     }
+    setStorage();
   }
 
 //SELECTING BOOK / EVENT LISTENER
@@ -656,7 +656,6 @@ function refreshDOM(lib) {
           curTarg.remove();
           for (let i in mainLibrary) {
             if (mainLibrary[i].id == bookID) {
-              console.log(i)
               if (mainLibrary[i].read === "on") {
                 readCounter--;
                 readNumber.textContent = `Read: ${readCounter}`;
