@@ -2,6 +2,7 @@
   <head>
     <title>Stacks</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 <nav id="bookmark">
   <button id="new-button">New</button>
@@ -278,7 +279,6 @@
     color: #380c96;
     margin-left: 1.5vw;
   }
-
 /* BOOKSHELF START */
   main {
     display: grid;
@@ -384,6 +384,48 @@
     visibility: hidden;
     position: fixed;
   }
+@media screen and (max-width: 415px) {
+  nav {
+    background-image: none;
+    background-color: #cea1e3;
+    width: 100vw;
+    height: 7vw;
+    display: flex;
+  }
+  nav > button {
+    margin-top: 1.2vw;
+    height: 4.5vw;
+    width: 9vw;
+  }
+  #new-button {
+    margin-top: 1.2vw;
+  }
+  #search-button {
+    margin-top: 1.2vw;
+    height: 4.5vw;
+    width: 9vw;
+  }
+  #empty {
+    position: fixed;
+  }
+  main {
+    padding-top: 7vw;
+    grid-template-columns: 0 100vw 0;
+  }
+  .shelf {
+    width: 100vw;
+    grid-auto-rows: 35vw;
+  }
+  .book {
+    width: 5vw;
+    max-height: 27vw;
+    font-size: 2.3vw;
+  }
+  .stats {
+    font-size: 2vw;
+    margin-top: .8vw;
+  }
+}
 </style>
 <script>
 //*to do later -- support for multiple authors? series?
@@ -509,12 +551,22 @@ function setStorage() {
     if (library.length === 0) createShelf();
     for (let i in library) {
       // SHELF CREATION - couldn't figure out how to get it to auto drop to next shelf with grid, so fixed width books, 15 every shelf
-      if (i % 16 === 0) {
-        if (document.getElementById("currentShelf")) {
-          currentShelf.removeAttribute("id", "currentShelf");
+      if (window.screen.availWidth > 415) {
+        if (i % 16 === 0) {
+          if (document.getElementById("currentShelf")) {
+            currentShelf.removeAttribute("id", "currentShelf");
+          }
+          createShelf();
+        } 
+      }
+      if (window.screen.availWidth < 415) {
+        if (i % 15 === 0) {
+          if (document.getElementById("currentShelf")) {
+            currentShelf.removeAttribute("id", "currentShelf");
+          }
+          createShelf();
         }
-        createShelf();
-      }    
+      }
       //RENDER BOOKS
       function bookMakerDOM(parent, newNode) {
         function createParentDiv(parent, newNode) {
