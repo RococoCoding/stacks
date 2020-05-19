@@ -569,7 +569,13 @@ function setStorage() {
       readNumber.textContent = `Read: ${readCounter}`;
     }
   }
+  
   function addBookToLibrary(book) {
+    if (mainLibrary.length === 0) {
+      book.id = 0;
+    }
+    else book.id = mainLibrary.length - 1;
+    // book.id = mainLibrary[mainLibrary.length-1].id+1;
     mainLibrary.push(book);
     setStorage();
     booksNumber.textContent = `Books: ${mainLibrary.length}`;
@@ -633,7 +639,6 @@ function setStorage() {
       //RENDER BOOKS
       function bookMakerDOM(parent, newNode) {
         function createParentDiv(parent, newNode) {
-          library[i].id = parseInt(i);
           createAppend(parent, "div");
           classAdd(parent.lastChild, "book");
           setID(parent.lastChild, `book${i}`);
@@ -763,14 +768,18 @@ function refreshDOM(lib) {
           for (let i in mainLibrary) {
             console.log(mainLibrary[i])
             if (mainLibrary[i].id == bookID) {
-              console.log(mainLibrary[i])
               if (mainLibrary[i].read === "on") {
                 readCounter--;
                 readNumber.textContent = `Read: ${readCounter}`;
               }
               mainLibrary.splice(i, 1);
+              for (let i in mainLibrary) {
+                mainLibrary[i].id = i;
+              }
               setStorage();
               booksNumber.textContent = `Books: ${mainLibrary.length}`;
+              deleteMainDOM();
+              render(mainLibrary);
             }
           }
         }
@@ -855,6 +864,7 @@ function search(e){
   let searchQuery = document.getElementById("search-box").value;
   for (let i in mainLibrary) {
     let bookID = `book${mainLibrary[i].id}`;
+    console.log(bookID)
     if (!searchQuery) {document.getElementById(`${bookID}`).classList.remove("raised");}
     else {
       if (mainLibrary[i].title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1 || 
