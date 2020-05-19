@@ -318,6 +318,24 @@
     cursor: pointer;
     overflow:hidden;
   }
+  .book-onclick {
+    position: fixed;
+    height: max-content;
+    max-height: max-content;
+    width: 30vw;
+    word-wrap: break-word;
+    left: 40vw;
+    top: 10vw;
+    z-index: 2;
+    writing-mode: horizontal-tb;
+    text-orientation: upright;
+    font-size: 3vw;
+    line-height: 4vw;
+    text-align: center;
+    visibility: visible;
+    border-left-style: solid;
+    cursor: default;
+  }
   #force-empty-shelf {
     color: rgba(0, 0, 0, 0);
   }
@@ -425,22 +443,13 @@
     line-height: 3.7vw;
   }
   .book-onclick {
-    position: fixed;
     height: max-content;
     max-height: max-content;
     width: 50vw;
-    word-wrap: break-word;
     left: 20vw;
     top: 20vw;
-    z-index: 1;
-    writing-mode: horizontal-tb;
-    text-orientation: upright;
     font-size: 5vw;
-    text-align: center;
     line-height: 5vw;
-    visibility: visible;
-    border-left-style: solid;
-    cursor: default;
   }
   .year {
     font-size: 3vw;
@@ -481,7 +490,7 @@
     display:inline-flex;
   }
  .filter-number {
-    width:8vw;
+    width:12vw;
     margin: 0 1vw 3vw 1vw;
   }
 }
@@ -843,7 +852,12 @@ function addNewBook(e){
   for (let i = 0; i < bookClass.length; i++) {
     bookClass[i].addEventListener("click", selectBook);
   }
-  document.getElementById("new-form").reset();
+  addNewForm.classList.toggle("hidden");
+  function delayFunction() {
+    setTimeout(function() {addNewForm.classList.toggle("hidden");}, 50);
+  }
+  delayFunction();
+  addNewForm.reset();
 }
   //CLEAR BUTTON
 let clear = document.getElementById("clear");  
