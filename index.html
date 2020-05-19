@@ -720,8 +720,12 @@ function addNewBook(e){
   let authorLast = document.getElementById("new-form").elements[2];
   let pages = document.getElementById("new-form").elements[3];
   let year = document.getElementById("new-form").elements[4];
-  let read = document.getElementById("new-form").elements[5].value;
-  read.checked === false ? read.value = "off": read.value = "on";
+  let read = document.getElementById("new-form").elements[5];
+  if (read.checked === true) {
+    readNumber.textContent = `Read: ${readCounter}`;
+    read.value = "on";
+  }
+  else read.value = "off";
   const newBook = new bookMaker(title.value, authorFirst.value, authorLast.value, pages.value, year.value, read.value);
   addBookToLibrary(newBook);
   deleteMainDOM();
