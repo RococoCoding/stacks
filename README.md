@@ -1,4 +1,4 @@
-# Project 1 - Stacks  
+# Stacks  
 **Timeline**: One week  
 **Tech**: HTML, CSS, vanilla JS  
 **Description**: A personal library app featuring search, filter, sort and local storage  
